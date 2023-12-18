@@ -1,4 +1,4 @@
-# Install script for directory: /home/tiago/clion/Projeto - Air Travel Flight Management System
+# Install script for directory: /home/tiago/Projeto---Air-Travel-Flight-Management-System/Projeto - Air Travel Flight Management System
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/tiago/clion/Projeto - Air Travel Flight Management System/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/tiago/Projeto---Air-Travel-Flight-Management-System/Projeto - Air Travel Flight Management System/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
