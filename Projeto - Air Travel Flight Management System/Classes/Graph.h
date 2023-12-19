@@ -29,7 +29,7 @@ class Vertex {
     int num;               // auxiliary field
     int low;               // auxiliary field
 
-    void addEdge(Vertex<T> *dest, double w);
+    void addEdge(Vertex<T> *dest,string airline, float w);
     bool removeEdgeTo(Vertex<T> *d);
 public:
     Vertex(T in);
@@ -60,15 +60,19 @@ public:
 template <class T>
 class Edge {
     Vertex<T> * dest;      // destination vertex
-    double weight;         // edge weight
+    float distance;         // edge distance
+    string airline;
 public:
-    Edge(Vertex<T> *d, double w);
+    Edge(Vertex<T> *d, string airline,float w);
     Vertex<T> *getDest() const;
     void setDest(Vertex<T> *dest);
-    double getWeight() const;
-    void setWeight(double weight);
+    float getDistance() const;
+    void setDistance(float distance);
     friend class Graph<T>;
     friend class Vertex<T>;
+
+    void setAirline(string line);
+    string getAirline();
 };
 
 template <class T>
@@ -85,7 +89,7 @@ public:
     int getNumVertex() const;
     bool addVertex(const T &in);
     bool removeVertex(const T &in);
-    bool addEdge(const T &sourc, const T &dest, double w);
+    bool addEdge(const T &sourc, const T &dest, string airline,float w);
     bool removeEdge(const T &sourc, const T &dest);
     vector<Vertex<T> * > getVertexSet() const;
     vector<T> dfs() const;
@@ -98,10 +102,12 @@ public:
 /****************** Provided constructors and functions ********************/
 
 template <class T>
-Vertex<T>::Vertex(T in): info(in) {}
+Vertex<T>::Vertex(T in): info(in) {
+
+}
 
 template <class T>
-Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
+Edge<T>::Edge(Vertex<T> *d, string line,float w): dest(d), airline(line),distance(w) {}
 
 
 template <class T>
@@ -145,13 +151,21 @@ void Edge<T>::setDest(Vertex<T> *d) {
 }
 
 template<class T>
-double Edge<T>::getWeight() const {
-    return weight;
+float Edge<T>::getDistance() const {
+    return distance;
 }
 
 template<class T>
-void Edge<T>::setWeight(double weight) {
-    Edge::weight = weight;
+void Edge<T>::setDistance(float weight) {
+    Edge::distance = distance;
+}
+template<class T>
+void Edge<T>::setAirline(string line) {
+    Edge::airline = line;
+}
+template<class T>
+string Edge<T>::getAirline() {
+    return airline;
 }
 
 /*
@@ -231,26 +245,26 @@ bool Graph<T>::addVertex(const T &in) {
 
 /*
  * Adds an edge to a graph (this), given the contents of the source and
- * destination vertices and the edge weight (w).
+ * destination vertices and the edge distance (w).
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
 template <class T>
-bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
+bool Graph<T>::addEdge(const T &sourc, const T &dest,string airline, float w) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == NULL || v2 == NULL)
         return false;
-    v1->addEdge(v2,w);
+    v1->addEdge(v2,airline,w);
     return true;
 }
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
- * with a given destination vertex (d) and edge weight (w).
+ * with a given destination vertex (d) and edge distance (w).
  */
 template <class T>
-void Vertex<T>::addEdge(Vertex<T> *d, double w) {
-    adj.push_back(Edge<T>(d, w));
+void Vertex<T>::addEdge(Vertex<T> *d,string airline, float w) {
+    adj.push_back(Edge<T>(d,airline, w));
 }
 
 

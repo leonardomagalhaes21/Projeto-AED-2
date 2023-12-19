@@ -31,8 +31,7 @@ vector<vector<string>> Data::readCSV(const std::string& filename) {
     return data;
 }
 */
-std::vector<Airline> Data::readAirlines(const std::string& filename) {
-    std::vector<Airline> airlines;
+void Data::readAirlines(const std::string& filename) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
@@ -55,11 +54,9 @@ std::vector<Airline> Data::readAirlines(const std::string& filename) {
     }
 
     file.close();
-    return airlines;
 }
 
-std::vector<Airport> Data::readAirports(const std::string& filename) {
-    std::vector<Airport> airports;
+void Data::readAirports(const std::string& filename) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
@@ -86,10 +83,9 @@ std::vector<Airport> Data::readAirports(const std::string& filename) {
     }
 
     file.close();
-    return airports;
 }
 
-std::vector<Flight> Data::readFlights(const std::string& filename) {
+void Data::readFlights(const std::string& filename) {
     std::vector<Flight> flights;
     std::ifstream file(filename);
 
@@ -114,5 +110,50 @@ std::vector<Flight> Data::readFlights(const std::string& filename) {
     }
 
     file.close();
+}
+
+//
+void Data::createFlightsGraph(const std::string& filename){
+    std::ifstream file(filename);
+
+    flights = Graph(airports.size(), airports, true);
+
+    string source, target, airline, aLine;
+    getline(filename, aLine);
+    while (getline(in, aLine){
+        istringstream inn(aLine);
+        getline(inn, source, ',');
+        getline(inn, target, ',');
+        getline(inn, airline, ',');
+        Coordinate c1 = airports.find(Airport(source, "", "", "", 0, 0))->getCoordinate();
+        Coordinate c2 = airports.find(Airport(target, "", "", "", 0, 0))->getCoordinate();
+        flights.addEdge(source, target, airline, c1.distance(c2));
+    }
+}
+//
+
+Graph Data::getFlightsGraph() const{
     return flights;
+}
+std::vector<Airport> Data::getAirports() const {
+    return airports;
+}
+
+std::vector<Airline> Data::getAirlines() const{
+    return airlines;
+};
+
+Airline* Data::getAirline(string code) const{
+    for(auto i=airlines.begin();i!=airlines.end();i++){
+        if(i->getCode()=code){
+            return i;
+        }
+}
+
+Airport* Data::getAirport(string code) const{
+    for(auto i = airports.begin(); i != airports.end(); i++){
+        if(i->getCode() == code){
+            return i;
+        }
+    }
 }
