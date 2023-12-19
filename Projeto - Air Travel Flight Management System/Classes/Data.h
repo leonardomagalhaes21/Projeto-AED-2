@@ -15,14 +15,30 @@
 #include "Airport.h"
 #include "Flight.h"
 class Data {
+private:
+
+    std::vector<Airline> airlines;
+
+    std::vector<Airport> airports;
+
+    Graph flights;
+
 public:
     static std::vector<std::vector<std::string>> readCSV(const std::string& filename);
 
-    static std::vector<Airline> readAirlines(const std::string &filename);
+    static void readAirlines(const std::string &filename);
 
-    static std::vector<Airport> readAirports(const std::string &filename);
+    static void readAirports(const std::string &filename);
 
-    static std::vector<Flight> readFlights(const std::string &filename);
+    static void readFlights(const std::string &filename);
+
+    Airline* getAirline(string code) const;
+
+    Airport* getAirport(string code) const;
+
+    std::vector<Airport> getAirports() const;
+
+    std::vector<Airline> getAirlines() const;
 };
 
 
