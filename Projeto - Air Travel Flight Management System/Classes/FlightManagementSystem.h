@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "Data.h"
 #include "Graph.h"
@@ -15,9 +16,9 @@
 class FlightManagementSystem {
 public:
 
-    void loadAirports(const std::string& airportsFile);
-    void loadAirlines(const std::string& airlinesFile);
-    void loadFlights(const std::string& flightsFile);
+    void loadAirports();
+    void loadAirlines();
+    void loadFlights();
 
 
     int getGlobalNumberOfAirports() const;
@@ -38,9 +39,11 @@ public:
     std::vector<Flight> findBestFlightOptionByCoordinates(double latitude, double longitude) const;
 
 private:
-    std::vector<Airport> airports;
-    std::vector<Airline> airlines;
-    std::vector<Flight> flights;
+    std::unordered_map<std::string, Airline> airlines;
+
+    std::unordered_map<std::string, Airport> airports;
+
+    Graph flights;
 };
 #endif
 

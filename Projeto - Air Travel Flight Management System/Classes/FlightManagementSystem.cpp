@@ -2,21 +2,22 @@
 // Created by tiago on 18-12-2023.
 //
 
+#include <set>
 #include "FlightManagementSystem.h"
 
 
 using namespace std;
 
-void FlightManagementSystem::loadAirports(const string& airportsFile) {
-    airports = Data::readAirports(airportsFile);
+void FlightManagementSystem::loadAirports() {
+    airports = Data::getAirports();
 }
 
-void FlightManagementSystem::loadAirlines(const string& airlinesFile) {
-    airlines = Data::readAirlines(airlinesFile);
+void FlightManagementSystem::loadAirlines() {
+    airlines = Data::getAirlines();
 }
 
-void FlightManagementSystem::loadFlights(const string& flightsFile) {
-    flights = Data::readFlights(flightsFile);
+void FlightManagementSystem::loadFlights() {
+    flights = Data::getFlightsGraph();
 }
 
 int FlightManagementSystem::getGlobalNumberOfAirports() const {
@@ -24,64 +25,82 @@ int FlightManagementSystem::getGlobalNumberOfAirports() const {
 }
 
 int FlightManagementSystem::getGlobalNumberOfFlights() const {
-    return flights.size();
+    return flights.getVertexSet().size();
 }
 
-// por implementar//
+
+
 
 
 int FlightManagementSystem::getNumberOfFlightsFromAirport(const string& airportCode) const {
     int count = 0;
-    for (const Flight& flight : flights) {
-        if (flight.getSource() == airportCode) {
+    for (auto flight : flights.getVertexSet()) {
+        if (flight->getInfo() == airportCode) {
             count++;
         }
     }
     return count;
 }
 
-
+// por implementar//
 vector<Flight> FlightManagementSystem::findBestFlightOption(const string& source, const string& destination) const {
 
 }
 
 int FlightManagementSystem::getNumberOfAirlinesFromAirport(const string &airportCode) const {
-    return 0;
+    auto it = flights.findVertex(airportCode);
+    set<string> codes;
+    for (const auto *i: flights.getVertexSet()) {
+        for (const auto &e: i->getAdj()) {
+            codes.insert(e.getDest()->getInfo());
+        }
+        return codes.size();
+    }
 }
 
 int FlightManagementSystem::getNumberOfFlightsPerCityOrAirline(const string &cityOrAirline) const {
-    return 0;
+
 }
 
-int FlightManagementSystem::getNumberOfCountriesFromAirport(const string &airportCode) const {
-    return 0;
-}
+    int FlightManagementSystem::getNumberOfCountriesFromAirport(const string &airportCode) const {
+        auto it = flights.findVertex(airportCode);
+        set<string> countries;
 
-int FlightManagementSystem::getNumberOfDestinationsFromAirport(const string &airportCode) const {
-    return 0;
-}
+        for (const auto *i: flights.getVertexSet()) {
 
-int FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode,int maxStops) const {
-    return 0;
-}
+            for (const auto& e : i->getAdj())
+                countries.insert(e.getDest()->getInfo());
+        }
+        return countries.size();
+    }
 
-std::vector<std::pair<std::string, std::string>> FlightManagementSystem::getMaxTripWithStops() const {
-    return std::vector<std::pair<std::string, std::string>>();
-}
+    int FlightManagementSystem::getNumberOfDestinationsFromAirport(const string &airportCode) const {
+        return 0;
+    }
 
-std::string FlightManagementSystem::getTopAirportWithMostTraffic() const {
-    return std::string();
-}
+    int
+    FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode, int maxStops) const {
+        return 0;
+    }
 
-std::vector<std::string> FlightManagementSystem::getEssentialAirports() const {
-    return std::vector<std::string>();
-}
+    std::vector<std::pair<std::string, std::string>> FlightManagementSystem::getMaxTripWithStops() const {
+        return std::vector<std::pair<std::string, std::string>>();
+    }
 
-std::vector<Flight>
-FlightManagementSystem::findBestFlightOptionByCity(const string &sourceCity, const string &destinationCity) const {
-    return std::vector<Flight>();
-}
+    std::string FlightManagementSystem::getTopAirportWithMostTraffic() const {
+        return std::string();
+    }
 
-std::vector<Flight> FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, double longitude) const {
-    return std::vector<Flight>();
-}
+    std::vector<std::string> FlightManagementSystem::getEssentialAirports() const {
+        return std::vector<std::string>();
+    }
+
+    std::vector<Flight>
+    FlightManagementSystem::findBestFlightOptionByCity(const string &sourceCity, const string &destinationCity) const {
+        return std::vector<Flight>();
+    }
+
+    std::vector<Flight>
+    FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, double longitude) const {
+        return std::vector<Flight>();
+    }
