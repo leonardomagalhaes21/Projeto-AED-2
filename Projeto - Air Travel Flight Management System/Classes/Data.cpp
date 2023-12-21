@@ -85,14 +85,14 @@ void Data::createFlightsGraph(const std::string& filename){
 }
 
 
-Graph Data::getFlightsGraph() const{
+Graph Data::getFlightsGraph() {
     return flights;
 }
-unordered_map<string, Airport> Data::getAirports() const {
+unordered_map<string, Airport> Data::getAirports() {
     return airports;
 }
 
-unordered_map<string, Airline> Data::getAirlines() const{
+unordered_map<string, Airline> Data::getAirlines(){
     return airlines;
 };
 
