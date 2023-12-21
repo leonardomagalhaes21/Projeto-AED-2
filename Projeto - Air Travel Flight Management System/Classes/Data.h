@@ -41,11 +41,11 @@ public:
 
     Airport* getAirport(string code) const;
 
-    static unordered_map<string, Airport> getAirports() const;
+    static unordered_map<string, Airport> getAirports();
 
-    static std::unordered_map<std::string, Airline> getAirlines() const;
+    static std::unordered_map<std::string, Airline> getAirlines();
 
-    static Graph getFlightsGraph() const;
+    static Graph getFlightsGraph();
 };
 
 
