@@ -2,41 +2,18 @@
 // Created by tiago on 18-12-2023.
 //
 
+#include <unordered_map>
 #include "Data.h"
+#include <fstream>
+
 using namespace std;
-/*
-vector<vector<string>> Data::readCSV(const std::string& filename) {
-    std::vector<std::vector<std::string>> data;
 
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Error: Unable to open file " << filename << std::endl;
-        return data;
-    }
-
-    string line;
-    while (getline(file, line)) {
-        vector<std::string> row;
-        stringstream ss(line);
-        string value;
-
-        while (std::getline(ss, value, ',')) {
-            row.push_back(value);
-        }
-
-        data.push_back(row);
-    }
-
-    file.close();
-    return data;
-}
-*/
 void Data::readAirlines(const std::string& filename) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
         std::cerr << "Erro ao abrir o arquivo de Airlines." << std::endl;
-        return airlines;
+        return;
     }
 
     std::string line;
@@ -50,7 +27,7 @@ void Data::readAirlines(const std::string& filename) {
         std::getline(ss, callsign, ',');
         std::getline(ss, country, ',');
 
-        airlines.push_back(Airline{code, name, callsign, country});
+        airlines.insert({code ,Airline{code, name, callsign, country}});
     }
 
     file.close();
@@ -61,7 +38,7 @@ void Data::readAirports(const std::string& filename) {
 
     if (!file.is_open()) {
         std::cerr << "Erro ao abrir o arquivo de Airports." << std::endl;
-        return airports;
+        return;
     }
 
     std::string line;
@@ -79,81 +56,58 @@ void Data::readAirports(const std::string& filename) {
         ss >> latitude; ss.ignore();
         ss >> longitude; ss.ignore();
 
-        airports.push_back(Airport{code, name, city, country, latitude, longitude});
+        airports.insert({code, Airport{code, name, city, country, latitude, longitude}});
     }
 
     file.close();
 }
 
-void Data::readFlights(const std::string& filename) {
-    std::vector<Flight> flights;
-    std::ifstream file(filename);
-
-    if (!file.is_open()) {
-
-        std::cerr << "Erro ao abrir o arquivo de Flights." << std::endl;
-        return flights;
-    }
-
-    std::string line;
-    std::getline(file, line);
-
-    while (std::getline(file, line)) {
-        std::istringstream ss(line);
-        std::string source, target, airline;
-
-        std::getline(ss, source, ',');
-        std::getline(ss, target, ',');
-        std::getline(ss, airline, ',');
-
-        flights.push_back(Flight{source, target, airline});
-    }
-
-    file.close();
-}
-
-//
 void Data::createFlightsGraph(const std::string& filename){
     std::ifstream file(filename);
 
     flights = Graph(airports.size(), airports, true);
 
     string source, target, airline, aLine;
-    getline(filename, aLine);
-    while (getline(in, aLine){
+    getline(file, aLine);
+    while (getline(file, aLine)){
         istringstream inn(aLine);
         getline(inn, source, ',');
         getline(inn, target, ',');
         getline(inn, airline, ',');
-        Coordinate c1 = airports.find(Airport(source, "", "", "", 0, 0))->getCoordinate();
-        Coordinate c2 = airports.find(Airport(target, "", "", "", 0, 0))->getCoordinate();
-        flights.addEdge(source, target, airline, c1.distance(c2));
+        Position p1 = airports.find(source)->second.getPosition();
+        Position p2 = airports.find(target)->second.getPosition();
+        flights.addEdge(source, target, airline, p1.haversineDistance(p2));
+        flights.findVertex(source)->setIndegree(flights.findVertex(source)->getIndegree()+1);
+        flights.findVertex(target)->setOutdegree(flights.findVertex(target)->getOutdegree()+1);
+
     }
+
 }
-//
+
 
 Graph Data::getFlightsGraph() const{
     return flights;
 }
-std::vector<Airport> Data::getAirports() const {
+unordered_map<string, Airport> Data::getAirports() const {
     return airports;
 }
 
-std::vector<Airline> Data::getAirlines() const{
+unordered_map<string, Airline> Data::getAirlines() const{
     return airlines;
 };
 
-Airline* Data::getAirline(string code) const{
-    for(auto i=airlines.begin();i!=airlines.end();i++){
-        if(i->getCode()=code){
-            return i;
-        }
+Airline* Data::getAirline(string code) const {
+    auto it = airlines.find(code);
+    if (it != airlines.end()) {
+        return &(it->second);
+    }
+    return nullptr;
 }
 
-Airport* Data::getAirport(string code) const{
-    for(auto i = airports.begin(); i != airports.end(); i++){
-        if(i->getCode() == code){
-            return i;
-        }
+Airport* Data::getAirport(string code) const {
+    auto it = airports.find(code);
+    if (it != airports.end()) {
+        return &(it->second);
     }
+    return nullptr;
 }

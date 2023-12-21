@@ -14,31 +14,38 @@
 #include "Airline.h"
 #include "Airport.h"
 #include "Flight.h"
+#include "Graph.h"
+
 class Data {
 private:
+//    typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
+//    typedef unordered_set<Airline, airlineHash, airlineHash> airlineHTable;
 
-    std::vector<Airline> airlines;
+    static std::unordered_map<std::string, Airline> airlines;
 
-    std::vector<Airport> airports;
+    static std::unordered_map<std::string, Airport> airports;
 
-    Graph flights;
+    static Graph flights;
 
 public:
-    static std::vector<std::vector<std::string>> readCSV(const std::string& filename);
+
 
     static void readAirlines(const std::string &filename);
 
     static void readAirports(const std::string &filename);
 
-    static void readFlights(const std::string &filename);
+
+    static void createFlightsGraph(const std::string& filename);
 
     Airline* getAirline(string code) const;
 
     Airport* getAirport(string code) const;
 
-    std::vector<Airport> getAirports() const;
+    static unordered_map<string, Airport> getAirports() const;
 
-    std::vector<Airline> getAirlines() const;
+    static std::unordered_map<std::string, Airline> getAirlines() const;
+
+    static Graph getFlightsGraph() const;
 };
 
 

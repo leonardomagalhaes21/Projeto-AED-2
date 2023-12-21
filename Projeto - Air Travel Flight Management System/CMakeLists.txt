@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.26.4)
 project(Projeto2)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -19,4 +19,5 @@ add_executable(Projeto2
         Classes/Menu.cpp
         Classes/Menu.h
         Classes/Position.h
-        Classes/Position.cpp)
+        Classes/Position.cpp
+        Classes/Data.cpp)
