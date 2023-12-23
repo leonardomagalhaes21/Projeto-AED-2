@@ -72,6 +72,9 @@ Graph::Graph(std::unordered_map<std::string, Airport> airports) {
     }
 }
 
+Graph::Graph() {
+}
+
 /*
  * Auxiliary function to find a vertex with a given content.
  */

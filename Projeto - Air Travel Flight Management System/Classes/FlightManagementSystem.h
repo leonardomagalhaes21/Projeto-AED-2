@@ -15,6 +15,7 @@
 
 class FlightManagementSystem {
 public:
+    FlightManagementSystem(Data d);
 
     void loadAirports(Data data);
     void loadAirlines(Data data);
@@ -25,8 +26,10 @@ public:
     int getGlobalNumberOfFlights() const;
     int getNumberOfFlightsFromAirport(const std::string& airportCode) const;
     int getNumberOfAirlinesFromAirport(const std::string& airportCode) const;
-    int getNumberOfFlightsPerCityOrAirline(const std::string& cityOrAirline) const;
+    int getNumberOfFlightsPerCity(const std::string& city) const;
+    int getNumberOfFlightsPerAirline(const std::string& airline) const;
     int getNumberOfCountriesFromAirport(const std::string& airportCode) const;
+    int getNumberOfCountriesFromCity(const std::string& city) const;
     int getNumberOfDestinationsFromAirport(const std::string& airportCode) const;
     int getNumberOfReachableDestinationsFromAirport(const std::string& airportCode, int maxStops) const;
     std::vector<std::pair<std::string, std::string>> getMaxTripWithStops() const;
@@ -43,7 +46,7 @@ private:
 
     std::unordered_map<std::string, Airport> airports;
 
-    Graph flights;
+    Graph flights = Graph();
 };
 #endif
 
