@@ -104,6 +104,7 @@ public:
     vector<string> topsort() const;
     bool isDAG() const;
 
+    Graph();
     Graph(unordered_map<std::string, Airport> airports);
 };
 
