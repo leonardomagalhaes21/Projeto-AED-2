@@ -8,6 +8,12 @@
 
 using namespace std;
 
+Data::Data() : flights(airports) {
+    readAirlines("../dataset/airlines.csv");
+    readAirports("../dataset/airports.csv");
+    createFlightsGraph("../dataset/flights.csv");
+}
+
 void Data::readAirlines(const std::string& filename) {
     std::ifstream file(filename);
 
@@ -65,7 +71,7 @@ void Data::readAirports(const std::string& filename) {
 void Data::createFlightsGraph(const std::string& filename){
     std::ifstream file(filename);
 
-    flights = Graph(airports.size(), airports, true);
+    flights = Graph(airports);
 
     string source, target, airline, aLine;
     getline(file, aLine);
@@ -81,7 +87,6 @@ void Data::createFlightsGraph(const std::string& filename){
         flights.findVertex(target)->setOutdegree(flights.findVertex(target)->getOutdegree()+1);
 
     }
-
 }
 
 
@@ -96,7 +101,7 @@ unordered_map<string, Airline> Data::getAirlines(){
     return airlines;
 };
 
-Airline* Data::getAirline(string code) const {
+const Airline * Data::getAirline(string code) const {
     auto it = airlines.find(code);
     if (it != airlines.end()) {
         return &(it->second);
@@ -104,10 +109,11 @@ Airline* Data::getAirline(string code) const {
     return nullptr;
 }
 
-Airport* Data::getAirport(string code) const {
+const Airport * Data::getAirport(string code) const {
     auto it = airports.find(code);
     if (it != airports.end()) {
         return &(it->second);
     }
     return nullptr;
 }
+

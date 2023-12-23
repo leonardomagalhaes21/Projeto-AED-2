@@ -8,16 +8,18 @@
 
 using namespace std;
 
-void FlightManagementSystem::loadAirports() {
-    airports = Data::getAirports();
+// estas 3 sao inuteis, temos de mudar depois
+
+void FlightManagementSystem::loadAirports(Data data) {
+    airports = data.getAirports();
 }
 
-void FlightManagementSystem::loadAirlines() {
-    airlines = Data::getAirlines();
+void FlightManagementSystem::loadAirlines(Data data) {
+    airlines = data.getAirlines();
 }
 
-void FlightManagementSystem::loadFlights() {
-    flights = Data::getFlightsGraph();
+void FlightManagementSystem::loadFlights(Data data) {
+    flights = data.getFlightsGraph();
 }
 
 int FlightManagementSystem::getGlobalNumberOfAirports() const {
@@ -44,7 +46,7 @@ int FlightManagementSystem::getNumberOfFlightsFromAirport(const string& airportC
 
 // por implementar//
 vector<Flight> FlightManagementSystem::findBestFlightOption(const string& source, const string& destination) const {
-
+    return vector<Flight>();
 }
 
 int FlightManagementSystem::getNumberOfAirlinesFromAirport(const string &airportCode) const {
@@ -54,12 +56,12 @@ int FlightManagementSystem::getNumberOfAirlinesFromAirport(const string &airport
         for (const auto &e: i->getAdj()) {
             codes.insert(e.getDest()->getInfo());
         }
-        return codes.size();
     }
+    return codes.size();
 }
 
 int FlightManagementSystem::getNumberOfFlightsPerCityOrAirline(const string &cityOrAirline) const {
-
+    return 0;
 }
 
     int FlightManagementSystem::getNumberOfCountriesFromAirport(const string &airportCode) const {

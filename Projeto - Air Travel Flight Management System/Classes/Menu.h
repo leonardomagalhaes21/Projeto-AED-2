@@ -5,6 +5,8 @@
 #ifndef PROJETO2_MENU_H
 #define PROJETO2_MENU_H
 
+#include "Data.h"
+
 
 class Menu {
 
