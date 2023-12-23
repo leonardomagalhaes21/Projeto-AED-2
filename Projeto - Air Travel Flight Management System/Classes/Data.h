@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "Data.h"
+#include <unordered_map>
 #include "Airline.h"
 #include "Airport.h"
 #include "Flight.h"
@@ -21,31 +21,33 @@ private:
 //    typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
 //    typedef unordered_set<Airline, airlineHash, airlineHash> airlineHTable;
 
-    static std::unordered_map<std::string, Airline> airlines;
+    std::unordered_map<std::string, Airline> airlines;
 
-    static std::unordered_map<std::string, Airport> airports;
+    std::unordered_map<std::string, Airport> airports;
 
-    static Graph flights;
+    Graph flights;
 
 public:
 
+    Data();
 
-    static void readAirlines(const std::string &filename);
+    void readAirlines(const std::string &filename);
 
-    static void readAirports(const std::string &filename);
+    void readAirports(const std::string &filename);
 
 
-    static void createFlightsGraph(const std::string& filename);
+    void createFlightsGraph(const std::string& filename);
 
-    Airline* getAirline(string code) const;
+    const Airline * getAirline(string code) const;
 
-    Airport* getAirport(string code) const;
+    const Airport * getAirport(string code) const;
 
-    static unordered_map<string, Airport> getAirports();
+    unordered_map<string, Airport> getAirports();
 
-    static std::unordered_map<std::string, Airline> getAirlines();
+    std::unordered_map<std::string, Airline> getAirlines();
 
-    static Graph getFlightsGraph();
+    Graph getFlightsGraph();
+
 };
 
 

@@ -20,4 +20,4 @@ add_executable(Projeto2
         Classes/Menu.h
         Classes/Position.h
         Classes/Position.cpp
-        Classes/Data.cpp)
+        Classes/Graph.cpp)

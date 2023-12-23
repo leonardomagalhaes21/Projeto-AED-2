@@ -16,9 +16,9 @@
 class FlightManagementSystem {
 public:
 
-    void loadAirports();
-    void loadAirlines();
-    void loadFlights();
+    void loadAirports(Data data);
+    void loadAirlines(Data data);
+    void loadFlights(Data data);
 
 
     int getGlobalNumberOfAirports() const;
