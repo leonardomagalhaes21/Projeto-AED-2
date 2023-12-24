@@ -26,6 +26,9 @@ int main(){
     cout << fms.getNumberOfFlightsPerAirline("TAP") << endl;
     cout << fms.getNumberOfCountriesFromAirport("OPO") << endl;
     cout << fms.getNumberOfCountriesFromCity("Miami") << endl;
+    cout << fms.getNumberOfDestinationsFromAirport("OPO") << endl;
+    cout << fms.getNumberOfCitiesFromAirport("OPO") << endl;
+    cout << fms.getNumberOfReachableDestinationsFromAirport("OPO", 2) << endl;
 
     return 0;
 }

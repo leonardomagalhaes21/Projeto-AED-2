@@ -105,13 +105,30 @@ int FlightManagementSystem::getNumberOfCountriesFromCity(const string &city) con
 
 
 int FlightManagementSystem::getNumberOfDestinationsFromAirport(const string &airportCode) const {
-        return 0;
+    auto vertex = flights.findVertex(airportCode);
+    set<string> destinations;
+    for (const auto& edge : vertex->getAdj()) {
+        destinations.insert(edge.getDest()->getInfo());
     }
+    return (int) destinations.size();
+}
 
-    int
-    FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode, int maxStops) const {
-        return 0;
+int FlightManagementSystem::getNumberOfCitiesFromAirport(const string &airportCode) const {
+    auto vertex = flights.findVertex(airportCode);
+    set<string> cities;
+    for (const auto& edge : vertex->getAdj()) {
+        cities.insert(airports.find(edge.getDest()->getInfo())->second.getCity());
     }
+    return (int) cities.size();
+}
+
+
+int FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode, int maxStops) const {
+    vector<string> destinations = flights.nodesAtDistanceBFS(airportCode, maxStops+1);
+
+    return (int) destinations.size();
+}
+
 
     std::vector<std::pair<std::string, std::string>> FlightManagementSystem::getMaxTripWithStops() const {
         return std::vector<std::pair<std::string, std::string>>();

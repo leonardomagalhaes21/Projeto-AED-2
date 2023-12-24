@@ -106,6 +106,7 @@ public:
 
     Graph();
     Graph(unordered_map<std::string, Airport> airports);
+    vector<string> nodesAtDistanceBFS(const string &source, int k) const;
 };
 
 
