@@ -31,6 +31,7 @@ public:
     int getNumberOfCountriesFromAirport(const std::string& airportCode) const;
     int getNumberOfCountriesFromCity(const std::string& city) const;
     int getNumberOfDestinationsFromAirport(const std::string& airportCode) const;
+    int getNumberOfCitiesFromAirport(const std::string &airportCode) const;
     int getNumberOfReachableDestinationsFromAirport(const std::string& airportCode, int maxStops) const;
     std::vector<std::pair<std::string, std::string>> getMaxTripWithStops() const;
     std::string getTopAirportWithMostTraffic() const;

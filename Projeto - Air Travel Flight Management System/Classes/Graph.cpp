@@ -386,3 +386,37 @@ vector<string> Graph::topsort() const {
 
     return res;
 }
+
+//Nodes at distance bfs
+
+vector<string> Graph::nodesAtDistanceBFS(const string &source, int k) const {
+    vector<string> res;
+    queue<Vertex*> temp;
+    for (auto v : vertexSet){
+        v->setVisited(false);
+    }
+    Vertex* start = findVertex(source);
+    start->setVisited(true);
+    temp.push(start);
+    while (!temp.empty()&&k>=0){
+        int size=temp.size();
+        while (size>0) {
+            Vertex* adj = temp.front();
+            temp.pop();
+
+            if (k == 0) {
+                res.push_back(adj->getInfo());
+            }
+            for (const auto& v: adj->getAdj()) {
+                Vertex* adj2 = v.getDest();
+                if (!adj2->isVisited()) {
+                    adj2->setVisited(true);
+                    temp.push(adj2);
+                }
+            }
+            size--;
+        }
+        k--;
+    }
+    return res;
+}
