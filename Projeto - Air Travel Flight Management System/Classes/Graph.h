@@ -12,7 +12,7 @@
 #include <string>
 #include "Airport.h"
 #include <unordered_map>
-
+#include <unordered_set>
 
 using namespace std;
 
@@ -29,7 +29,7 @@ class Vertex {
     bool visited;          // auxiliary field
     bool processing;       // auxiliary field
     int inDegree;          // auxiliary field
-    int outdegree;         // auxiliary field
+    int outDegree;         // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
 
@@ -107,6 +107,10 @@ public:
     Graph();
     Graph(unordered_map<std::string, Airport> airports);
     vector<string> nodesAtDistanceBFS(const string &source, int k) const;
+    vector<pair<string,string>> dfs(int& maxStops, vector<pair<string,string>>& res) const;
+    void dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops, int stops, const string &source) const;
+    unordered_set<string> articulationPoints() const;
+    vector<string> shortestPathBFS(const string &source, const string &destination) const;
 };
 
 
