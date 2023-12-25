@@ -45,10 +45,6 @@ int FlightManagementSystem::getNumberOfFlightsFromAirport(const string& airportC
     return (int) vertex->getAdj().size();
 }
 
-// por implementar//
-vector<Flight> FlightManagementSystem::findBestFlightOption(const string& source, const string& destination) const {
-    return vector<Flight>();
-}
 
 int FlightManagementSystem::getNumberOfAirlinesFromAirport(const string &airportCode) const {
     auto vertex = flights.findVertex(airportCode);
@@ -126,29 +122,110 @@ int FlightManagementSystem::getNumberOfCitiesFromAirport(const string &airportCo
 int FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode, int maxStops) const {
     vector<string> destinations = flights.nodesAtDistanceBFS(airportCode, maxStops+1);
 
-    return (int) destinations.size();
+    return (int) destinations.size() - 1;
 }
 
+// acho que esta tá mal
+std::vector<std::pair<std::string, std::string>> FlightManagementSystem::getMaxTripWithStops() const {
+    int maxStops = 0;
+    vector<pair<string,string>> res;
+    flights.dfs(maxStops, res);
+    cout << maxStops << endl;
+    return res;
+}
 
-    std::vector<std::pair<std::string, std::string>> FlightManagementSystem::getMaxTripWithStops() const {
-        return std::vector<std::pair<std::string, std::string>>();
+std::string FlightManagementSystem::getTopAirportWithMostTraffic(int k) const {
+    for (auto vertex : flights.getVertexSet()){
+        vertex->setOutdegree((int) vertex->getAdj().size());
+        vertex->setIndegree(0);
+    }
+    for (auto vertex : flights.getVertexSet()){
+        for (const auto& edge : vertex->getAdj()){
+            edge.getDest()->setIndegree(edge.getDest()->getIndegree() + 1);
+        }
+    }
+    vector<Vertex*> res = flights.getVertexSet();
+    sort(res.begin(), res.end(), [](Vertex* a, Vertex* b) {
+        return (a->getIndegree() + a->getOutdegree()) > (b->getIndegree() + b->getOutdegree()); // ordem inversa
+    });
+
+    if (k <= 0 || k > flights.getVertexSet().size()) return "";
+    return res[k-1]->getInfo();
+}
+
+//devia retornar 308 (disseram no grupo wpp), retorna 310 aqui
+std::unordered_set<std::string> FlightManagementSystem::getEssentialAirports() const {
+    return flights.articulationPoints();
+}
+
+std::vector<Flight> FlightManagementSystem::findBestFlightOption(const string &source, const string &destination) const {
+    auto path = flights.shortestPathBFS(source, destination);
+    vector<Flight> res;
+    for(int i = 0; i < path.size()-1; i++){
+        Vertex* s = flights.findVertex(path[i]);
+        for(auto edge : s->getAdj()){
+            if(edge.getDest()->getInfo() == path[i+1]){
+                Flight flight= Flight(path[i],path[i+1],edge.getAirline());
+                res.push_back(flight);
+                break;
+            }
+        }
+    }
+    return res;
+}
+
+void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourceCity, const std::string &destinationCity) const {
+    vector<string> sourceCodes;
+    vector<string> destinationCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+    int i = 0;
+    int j = 0;
+    while(i < sourceCodes.size()){
+
+        cout << "Option " << i+1 << ": " << endl;
+        for(const auto& flight : findBestFlightOption(sourceCodes[i], destinationCodes[j])){
+            cout << flight.getSource() << " -> " << flight.getTarget() << " " << flight.getAirline() << endl;
+        }
+        cout << endl;
+        i++;
+        if(j < destinationCodes.size()-1)
+        j++;
+    }
+}
+
+void FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, double longitude, const string &destination) const {
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> min;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            min.clear();
+            min.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            min.push_back(vertex->getInfo());
+        }
     }
 
-    std::string FlightManagementSystem::getTopAirportWithMostTraffic() const {
-        return std::string();
+    int i = 1;
+    for (const auto& airport : min){
+        cout << "Option " << i << ": " << endl;
+        for(const auto& flight : findBestFlightOption(airport,destination)){
+            cout << flight.getSource() << " -> " << flight.getTarget() << " " << flight.getAirline() << endl;
+        }
+       i++;
     }
 
-    std::vector<std::string> FlightManagementSystem::getEssentialAirports() const {
-        return std::vector<std::string>();
-    }
-
-    std::vector<Flight>
-    FlightManagementSystem::findBestFlightOptionByCity(const string &sourceCity, const string &destinationCity) const {
-        return std::vector<Flight>();
-    }
-
-    std::vector<Flight>
-    FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, double longitude) const {
-        return std::vector<Flight>();
-    }
+}
 

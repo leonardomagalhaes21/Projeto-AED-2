@@ -34,13 +34,13 @@ public:
     int getNumberOfCitiesFromAirport(const std::string &airportCode) const;
     int getNumberOfReachableDestinationsFromAirport(const std::string& airportCode, int maxStops) const;
     std::vector<std::pair<std::string, std::string>> getMaxTripWithStops() const;
-    std::string getTopAirportWithMostTraffic() const;
-    std::vector<std::string> getEssentialAirports() const;
+    std::string getTopAirportWithMostTraffic(int k) const;
+    unordered_set<string> getEssentialAirports() const;
 
     
     std::vector<Flight> findBestFlightOption(const std::string& source, const std::string& destination) const;
-    std::vector<Flight> findBestFlightOptionByCity(const std::string& sourceCity, const std::string& destinationCity) const;
-    std::vector<Flight> findBestFlightOptionByCoordinates(double latitude, double longitude) const;
+    void findBestFlightOptionByCity(const std::string& sourceCity, const std::string& destinationCity) const;
+    void findBestFlightOptionByCoordinates(double latitude, double longitude, const std::string &destination) const;
 
 private:
     std::unordered_map<std::string, Airline> airlines;

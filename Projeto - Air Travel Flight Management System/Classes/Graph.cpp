@@ -91,11 +91,11 @@ bool Vertex::isVisited() const {
 }
 
 int Vertex::getOutdegree() const {
-    return outdegree;
+    return outDegree;
 }
 
 void Vertex::setOutdegree(int outdegree) {
-    Vertex::outdegree = outdegree;
+    Vertex::outDegree = outdegree;
 }
 
 int Vertex::getIndegree() const {
@@ -404,9 +404,8 @@ vector<string> Graph::nodesAtDistanceBFS(const string &source, int k) const {
             Vertex* adj = temp.front();
             temp.pop();
 
-            if (k == 0) {
-                res.push_back(adj->getInfo());
-            }
+            res.push_back(adj->getInfo());
+
             for (const auto& v: adj->getAdj()) {
                 Vertex* adj2 = v.getDest();
                 if (!adj2->isVisited()) {
@@ -419,4 +418,143 @@ vector<string> Graph::nodesAtDistanceBFS(const string &source, int k) const {
         k--;
     }
     return res;
+}
+
+vector<pair<string,string>> Graph::dfs(int& maxStops, vector<pair<string,string>>& res) const {
+    for (auto v : vertexSet)
+        v->setVisited(false);
+    for (auto v : vertexSet)
+        if (! v->visited)
+            dfsVisit(v, res, maxStops, 0, v->getInfo());
+    return res;
+}
+
+void Graph::dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops, int stops, const string &source) const {
+
+    v->setVisited(true);
+
+    if (stops > maxStops) {
+
+        maxStops = stops;
+
+        res.clear();
+
+        res.push_back({source, v->getInfo()});
+
+    } else if (stops == maxStops) {
+
+        res.push_back({source, v->getInfo()});
+
+    }
+
+    for (auto &e: v->adj) {
+
+        auto w = e.dest;
+
+        if (!w->visited)
+
+            dfsVisit(w, res, maxStops, stops + 1, source);
+
+    }
+}
+
+
+void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &res, int &i);
+unordered_set<string> Graph::articulationPoints() const {
+    unordered_set<string> res;
+
+    for (auto v : vertexSet)
+        v->setVisited(false);
+
+    int i = 0;
+    stack<string> s;  // Criar a pilha aqui
+    for (auto v : vertexSet) {
+        if (!v->isVisited()) {
+            dfs_art(v, s, res, i);
+        }
+    }
+
+    return res;
+}
+
+void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &l, int &i){
+    v->setVisited(true);
+    v->setNum(i);
+    v->setLow(i);
+    i++;
+
+    int children = 0;
+    bool isArticulation = false;
+
+    for (auto &e : v->getAdj()) {
+        auto w = e.getDest();
+
+        if (!w->isVisited()) {
+            children++;
+            s.push(v->getInfo());
+            s.push(w->getInfo());
+
+            w->setNum(i);
+            w->setLow(i);
+            i++;
+
+            dfs_art(w, s, l, i);
+
+            v->setLow(min(v->getLow(), w->getLow()));
+
+            if ((v->getNum() == 0 && children > 1) || (v->getNum() != 0 && w->getLow() >= v->getNum())) {
+                isArticulation = true;
+            }
+
+            if (w->getLow() > v->getNum()) {
+                l.insert(v->getInfo());
+            }
+        } else if (w->getInfo() != s.top()) {
+            v->setLow(min(v->getLow(), w->getNum()));
+            s.push(w->getInfo());
+        }
+    }
+
+    if (v->getNum() == 0 && children > 1) {
+        isArticulation = true;
+    }
+
+    if (isArticulation) {
+        l.insert(v->getInfo());
+    }
+}
+
+vector<string> Graph::shortestPathBFS(const string &source, const string &destination) const {
+    unordered_map<string, string> prev;
+    queue<string> queue;
+    unordered_set<string> visited;
+
+    queue.push(source);
+    visited.insert(source);
+
+    while (!queue.empty()) {
+        string node = queue.front();
+        queue.pop();
+
+        if (node == destination) {
+            vector<string> path;
+            for (string at = destination; at != ""; at = prev[at]) {
+                path.push_back(at);
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+
+        Vertex* vertex = findVertex(node);
+        for (const Edge& edge : vertex->getAdj()) {
+            string neighbour = edge.getDest()->getInfo();
+            if (visited.find(neighbour) == visited.end()) {
+                queue.push(neighbour);
+                visited.insert(neighbour);
+                prev[neighbour] = node;
+            }
+        }
+    }
+
+    return vector<string>();
 }
