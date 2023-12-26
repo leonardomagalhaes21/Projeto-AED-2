@@ -225,6 +225,7 @@ void Menu::showMenu() {
                         cin >> city;
                         cout << "Number of flights per city " << city << ": " << fms.getNumberOfFlightsPerCity(city)
                              << endl;
+                        break;
                     }
                     case '3': {
                         string airline;
