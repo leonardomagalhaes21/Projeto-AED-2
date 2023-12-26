@@ -210,7 +210,7 @@ void Menu::showMenu() {
                 cout << "| 3.  Get number of flights per airline            |" << endl;
                 cout << "| 4.  Get number of countries from city            |" << endl;
                 cout << "| 5.  Get max trip with stops                      |" << endl;
-                cout << "| Q. Exit                                          |" << endl;
+                cout << "| Q.  Exit                                          |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
                 cin >> key2;
@@ -268,27 +268,56 @@ void Menu::showMenu() {
                 cout << "| 1.  Find best flight option                      |" << endl;
                 cout << "| 2.  Find best flight option by city              |" << endl;
                 cout << "| 3.  Find best flight option by coordinates       |" << endl;
-                cout << "| Q. Exit                                          |" << endl;
+                cout << "| Q.  Exit                                          |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
                 cin >> key5;
                 switch (key5) {
                     case '1': {
-                        string source, target;
-                        cout << "Source airport code: ";
-                        cin >> source;
-                        cout << "Target airport code: ";
-                        cin >> target;
-                        for (const auto &flight: fms.findBestFlightOption(source, target)) {
-                            cout << flight.source << " -> " << flight.target << " (";
-                            for (int j = 0; j < flight.airlines.size(); j++) {
-                                cout << flight.airlines[j];
-                                if (j != flight.airlines.size() - 1) {
-                                    cout << ", ";
+                        char key6;
+                        drawTop();
+                        cout << "| 1.  Code                                         |" << endl;
+                        cout << "| 2.  Airport Name                                 |" << endl;
+                        cout << "| Q.  Exit                                          |" << endl;
+                        drawBottom();
+                        cout << "Choose an option: ";
+                        cin >> key6;
+                        switch(key6) {
+                            case '1': {
+                                string source, target;
+                                cout << "Source airport code: ";
+                                cin >> source;
+                                cout << "Target airport code: ";
+                                cin >> target;
+                                for (const auto &flight: fms.findBestFlightOption(source, target)) {
+                                    cout << flight.source << " -> " << flight.target << " (";
+                                    for (int j = 0; j < flight.airlines.size(); j++) {
+                                        cout << flight.airlines[j];
+                                        if (j != flight.airlines.size() - 1) {
+                                            cout << ", ";
+                                        }
+                                    }
+                                    cout << ")" << endl;
                                 }
+                                break;
                             }
-                            cout << ")" << endl;
-                        }
+                            case '2': {
+                                string source, target;
+                                cout << "Source airport name: ";
+                                cin.ignore();
+                                getline(cin, source);
+                                cout << "Target airport name: ";
+                                getline(cin, target);
+                                fms.findBestFlightOptionByAirportName(source, target);
+                                break;
+                            }
+                            case 'Q' : {
+                                break;
+                            }
+                            default: {
+                                cout << endl << "Invalid option!" << endl;
+                            }
+                        };
                         break;
                     }
                     case '2': {
