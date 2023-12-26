@@ -13,6 +13,12 @@
 #include "Data.h"
 #include "Graph.h"
 
+struct Route {
+    std::string source;
+    std::string target;
+    std::vector<std::string> airlines;
+};
+
 class FlightManagementSystem {
 public:
     FlightManagementSystem(Data d);
@@ -38,7 +44,7 @@ public:
     unordered_set<string> getEssentialAirports() const;
 
     
-    std::vector<Flight> findBestFlightOption(const std::string& source, const std::string& destination) const;
+    std::vector<Route> findBestFlightOption(const std::string& source, const std::string& destination) const;
     void findBestFlightOptionByCity(const std::string& sourceCity, const std::string& destinationCity) const;
     void findBestFlightOptionByCoordinates(double latitude, double longitude, const std::string &destination) const;
 

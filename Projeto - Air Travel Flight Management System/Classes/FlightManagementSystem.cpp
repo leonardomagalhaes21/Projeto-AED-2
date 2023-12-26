@@ -158,18 +158,19 @@ std::unordered_set<std::string> FlightManagementSystem::getEssentialAirports() c
     return flights.articulationPoints();
 }
 
-std::vector<Flight> FlightManagementSystem::findBestFlightOption(const string &source, const string &destination) const {
+std::vector<Route> FlightManagementSystem::findBestFlightOption(const std::string &source, const std::string &destination) const {
     auto path = flights.shortestPathBFS(source, destination);
-    vector<Flight> res;
+    std::vector<Route> res;
     for(int i = 0; i < path.size()-1; i++){
         Vertex* s = flights.findVertex(path[i]);
+        std::vector<std::string> FlightAirlines;
         for(auto edge : s->getAdj()){
             if(edge.getDest()->getInfo() == path[i+1]){
-                Flight flight= Flight(path[i],path[i+1],edge.getAirline());
-                res.push_back(flight);
-                break;
+                FlightAirlines.push_back(edge.getAirline());
             }
         }
+        Route route = {path[i], path[i+1], FlightAirlines};
+        res.push_back(route);
     }
     return res;
 }
@@ -191,7 +192,14 @@ void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourc
 
         cout << "Option " << i+1 << ": " << endl;
         for(const auto& flight : findBestFlightOption(sourceCodes[i], destinationCodes[j])){
-            cout << flight.getSource() << " -> " << flight.getTarget() << " " << flight.getAirline() << endl;
+            cout << flight.source << " -> " << flight.target << " (";
+            for(int p = 0; p < flight.airlines.size(); p++){
+                cout << flight.airlines[j];
+                if(p != flight.airlines.size() - 1) {
+                    cout << ", ";
+                }
+            }
+            cout << ")" << endl;
         }
         cout << endl;
         i++;
@@ -222,9 +230,17 @@ void FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, 
     for (const auto& airport : min){
         cout << "Option " << i << ": " << endl;
         for(const auto& flight : findBestFlightOption(airport,destination)){
-            cout << flight.getSource() << " -> " << flight.getTarget() << " " << flight.getAirline() << endl;
+            cout << flight.source << " -> " << flight.target << " (";
+            for(int j = 0; j < flight.airlines.size(); j++){
+                cout << flight.airlines[j];
+                if(j != flight.airlines.size() - 1) {
+                    cout << ", ";
+                }
+            }
+            cout << ")" << endl;
         }
-       i++;
+        cout << endl;
+        i++;
     }
 
 }
