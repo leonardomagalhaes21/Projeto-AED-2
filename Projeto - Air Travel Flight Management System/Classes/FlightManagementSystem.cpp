@@ -241,3 +241,21 @@ void FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, 
 
 }
 
+//ponto 5
+std::vector<Route> FlightManagementSystem::findBestFlightOptionWithGivenAirlines(const std::string &source, const std::string &destination,const std::vector<std::string> &selectedAirlines) const {
+    auto path = flights.shortestPathBFS(source, destination,selectedAirlines);
+    std::vector<Route> res;
+    for(int i = 0; i < path.size()-1; i++){
+        Vertex* s = flights.findVertex(path[i]);
+        std::vector<std::string> FlightAirlines;
+        for(auto edge : s->getAdj()){
+            if(edge.getDest()->getInfo() == path[i+1]){
+                FlightAirlines.push_back(edge.getAirline());
+            }
+        }
+        Route route = {path[i], path[i+1], FlightAirlines};
+        res.push_back(route);
+    }
+    return res;
+}
+

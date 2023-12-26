@@ -558,3 +558,39 @@ vector<string> Graph::shortestPathBFS(const string &source, const string &destin
 
     return vector<string>();
 }
+vector<string> Graph::shortestPathBFS(const string &source, const string &destination,const std::vector<std::string> &selectedAirlines) const {
+    std::unordered_map<std::string, std::string> prev;
+    std::queue<std::string> queue;
+    std::unordered_set<std::string> visited;
+
+    queue.push(source);
+    visited.insert(source);
+
+    while (!queue.empty()) {
+        std::string node = queue.front();
+        queue.pop();
+
+        if (node == destination) {
+            std::vector<std::string> path;
+            for (std::string at = destination; at != ""; at = prev[at]) {
+                path.push_back(at);
+            }
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
+
+        Vertex* vertex = findVertex(node);
+        for (const Edge& edge : vertex->getAdj()) {
+            std::string neighbour = edge.getDest()->getInfo();
+            std::string airline = edge.airline;
+
+            if (visited.find(neighbour) == visited.end() && std::find(selectedAirlines.begin(), selectedAirlines.end(), airline) != selectedAirlines.end()) {
+                queue.push(neighbour);
+                visited.insert(neighbour);
+                prev[neighbour] = node;
+            }
+        }
+    }
+
+    return vector<string>();
+}

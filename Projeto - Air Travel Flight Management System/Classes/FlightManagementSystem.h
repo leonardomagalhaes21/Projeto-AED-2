@@ -47,6 +47,7 @@ public:
     std::vector<Route> findBestFlightOption(const std::string& source, const std::string& destination) const;
     void findBestFlightOptionByCity(const std::string& sourceCity, const std::string& destinationCity) const;
     void findBestFlightOptionByCoordinates(double latitude, double longitude, const std::string &destination) const;
+    std::vector<Route> findBestFlightOptionWithGivenAirlines(const std::string& source, const std::string& destination,const std::vector<std::string> &selectedAirlines) const;
 
 private:
     std::unordered_map<std::string, Airline> airlines;
