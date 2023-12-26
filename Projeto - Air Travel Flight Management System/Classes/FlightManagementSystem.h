@@ -45,7 +45,7 @@ public:
 
     
     std::vector<Route> findBestFlightOption(const std::string& source, const std::string& destination) const;
-    void findBestFlightOptionByCity(const std::string& sourceCity, const std::string& destinationCity) const;
+    void findBestFlightOptionByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const;
     void findBestFlightOptionByCoordinates(double latitude, double longitude, const std::string &destination) const;
 
 private:
