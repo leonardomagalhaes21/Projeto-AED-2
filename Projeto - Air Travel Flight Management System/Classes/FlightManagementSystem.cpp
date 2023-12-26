@@ -164,14 +164,14 @@ std::vector<Route> FlightManagementSystem::findBestFlightOption(const std::strin
     return res;
 }
 
-void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourceCity, const std::string &destinationCity) const {
+void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const {
     vector<string> sourceCodes;
     vector<string> destinationCodes;
     for(auto vertex : flights.getVertexSet()){
-        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
             sourceCodes.push_back(vertex->getInfo());
         }
-        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity){
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
             destinationCodes.push_back(vertex->getInfo());
         }
     }
@@ -183,7 +183,7 @@ void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourc
         for(const auto& flight : findBestFlightOption(sourceCodes[i], destinationCodes[j])){
             cout << flight.source << " -> " << flight.target << " (";
             for(int p = 0; p < flight.airlines.size(); p++){
-                cout << flight.airlines[j];
+                cout << flight.airlines[p];
                 if(p != flight.airlines.size() - 1) {
                     cout << ", ";
                 }

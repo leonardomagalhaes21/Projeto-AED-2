@@ -292,12 +292,17 @@ void Menu::showMenu() {
                         break;
                     }
                     case '2': {
-                        string source, target;
+                        string source, sourceCountry, target, targetCountry;
                         cout << "Source city: ";
-                        cin >> source;
+                        cin.ignore();
+                        getline(cin, source);
+                        cout << "Source country: ";
+                        getline(cin, sourceCountry);
                         cout << "Target city: ";
-                        cin >> target;
-                        fms.findBestFlightOptionByCity(source, target);
+                        getline(cin, target);
+                        cout << "Target country: ";
+                        getline(cin, targetCountry);
+                        fms.findBestFlightOptionByCity(source, sourceCountry, target, targetCountry);
                         break;
                     }
                     case '3': {
