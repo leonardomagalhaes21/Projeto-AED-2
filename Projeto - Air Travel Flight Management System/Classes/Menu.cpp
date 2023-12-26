@@ -30,15 +30,24 @@ int main(){
     cout << fms.getNumberOfCitiesFromAirport("OPO") << endl;
     cout << fms.getNumberOfReachableDestinationsFromAirport("OPO", 1) << endl;
     auto vec = fms.getMaxTripWithStops();
-    for (auto a : vec) {
+    for (const auto& a : vec) {
         cout << d.getAirports().find(a.first)->second.getName() << " --> " << d.getAirports().find(a.second)->second.getName() << endl;
     }
     cout << fms.getTopAirportWithMostTraffic(1)  << " -- " << d.getAirports().find(fms.getTopAirportWithMostTraffic(1))->second.getName() << endl;
     cout << fms.getEssentialAirports().size() << endl;
-    for(auto a : fms.findBestFlightOption("OPO", "PNP")){
-        cout << a.getSource() << " -> " << a.getTarget() << " " << a.getAirline() << endl;
+
+    for(const auto& flight : fms.findBestFlightOption("OPO", "JFK")){
+        cout << flight.source << " -> " << flight.target << " (";
+        for(int j = 0; j < flight.airlines.size(); j++){
+            cout << flight.airlines[j];
+            if(j != flight.airlines.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << ")" << endl;
     }
+    cout << endl;
     fms.findBestFlightOptionByCity("New York", "Maputo");
-    fms.findBestFlightOptionByCoordinates(45.5, 45.5, "OPO");
+    fms.findBestFlightOptionByCoordinates(40.01, -8.90, "JFK");
     return 0;
 }
