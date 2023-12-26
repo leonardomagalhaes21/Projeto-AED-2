@@ -1,3 +1,1 @@
-"C:\Program Files\JetBrains\CLion 2023.2.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\Projeto2.dir/objects.a
-C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\ar.exe qc CMakeFiles\Projeto2.dir/objects.a @CMakeFiles\Projeto2.dir\objects1.rsp
-C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\Projeto2.dir/objects.a -Wl,--no-whole-archive -o Projeto2.exe -Wl,--out-implib,libProjeto2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Projeto2.dir\linkLibs.rsp
+/usr/bin/c++ -g CMakeFiles/Projeto2.dir/Classes/Airport.cpp.o CMakeFiles/Projeto2.dir/Classes/Airline.cpp.o CMakeFiles/Projeto2.dir/Classes/Data.cpp.o CMakeFiles/Projeto2.dir/Classes/Flight.cpp.o CMakeFiles/Projeto2.dir/Classes/FlightManagementSystem.cpp.o CMakeFiles/Projeto2.dir/Classes/Menu.cpp.o CMakeFiles/Projeto2.dir/Classes/Position.cpp.o CMakeFiles/Projeto2.dir/Classes/Graph.cpp.o CMakeFiles/Projeto2.dir/main.cpp.o -o Projeto2 

@@ -3,8 +3,9 @@
 //
 
 #include <set>
-#include "FlightManagementSystem.h"
 
+#include "FlightManagementSystem.h"
+#include <climits>
 
 using namespace std;
 
@@ -14,18 +15,6 @@ FlightManagementSystem::FlightManagementSystem(Data d) {
     flights = d.getFlightsGraph();
 }
 
-// ver o que fazer com estes 3 metodos
-void FlightManagementSystem::loadAirports(Data data) {
-    airports = data.getAirports();
-}
-
-void FlightManagementSystem::loadAirlines(Data data) {
-    airlines = data.getAirlines();
-}
-
-void FlightManagementSystem::loadFlights(Data data) {
-    flights = data.getFlightsGraph();
-}
 
 int FlightManagementSystem::getGlobalNumberOfAirports() const {
     return (int) airports.size();
@@ -225,7 +214,14 @@ void FlightManagementSystem::findBestFlightOptionByCoordinates(double latitude, 
             min.push_back(vertex->getInfo());
         }
     }
-
+    bool flag=false;
+    if(airports.find(destination) == airports.end()){
+        flag = true;
+    }
+    if (flag){
+        cout << "No Code available" << endl;
+        return;
+    }
     int i = 1;
     for (const auto& airport : min){
         cout << "Option " << i << ": " << endl;
