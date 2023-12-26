@@ -164,6 +164,28 @@ std::vector<Route> FlightManagementSystem::findBestFlightOption(const std::strin
     return res;
 }
 
+void FlightManagementSystem::findBestFlightOptionByAirportName(const std::string &source, const std::string &destination) const {
+    string s,d;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == source){
+            s = vertex->getInfo();
+        }
+        if(airports.find(vertex->getInfo())->second.getName() == destination){
+            d = vertex->getInfo();
+        }
+    }
+    for(const auto& flight : findBestFlightOption(s,d)){
+        cout << flight.source << " -> " << flight.target << " (";
+        for(int i = 0; i < flight.airlines.size(); i++){
+            cout << flight.airlines[i];
+            if(i != flight.airlines.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << ")" << endl;
+    }
+}
+
 void FlightManagementSystem::findBestFlightOptionByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const {
     vector<string> sourceCodes;
     vector<string> destinationCodes;
