@@ -1,6 +1,4 @@
-//
-// Created by tiago on 18-12-2023.
-//
+
 
 #ifndef PROJETO2_GRAPH_H
 #define PROJETO2_GRAPH_H
@@ -24,14 +22,14 @@ class Vertex;
 /****************** Provided structures  ********************/
 
 class Vertex {
-    string info;           // aiport code
-    vector<Edge > adj;     // list of outgoing edges
-    bool visited;          // auxiliary field
-    bool processing;       // auxiliary field
-    int inDegree;          // auxiliary field
-    int outDegree;         // auxiliary field
-    int num;               // auxiliary field
-    int low;               // auxiliary field
+    string info;           ///< aiport code
+    vector<Edge > adj;     ///< list of outgoing edges
+    bool visited;          ///< auxiliary field
+    bool processing;       ///< auxiliary field
+    int inDegree;          ///< auxiliary field
+    int outDegree;         ///< auxiliary field
+    int num;               ///< auxiliary field
+    int low;               ///< auxiliary field
 
 
     void addEdge(Vertex *dest,string airline, float w);
@@ -112,6 +110,10 @@ public:
     unordered_set<string> articulationPoints() const;
     vector<string> shortestPathBFS(const string &source, const string &destination) const;
     vector<string> shortestPathBFS(const string &source, const string &destination,const std::vector<std::string> &selectedAirlines) const;
+
+    void bfsVisitForDiameter(Vertex *start, int &diameter, unordered_set<std::string> &visited) const;
+
+    int calculateDiameter() const;
 };
 
 

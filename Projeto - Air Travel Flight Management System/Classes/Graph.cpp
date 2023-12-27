@@ -1,72 +1,169 @@
-//
-// Created by leo on 23/12/2023.
-//
+
 
 #include "Graph.h"
 #include <iostream>
-/****************** Provided constructors and functions ********************/
 
 
+/**
+ * @brief Constructor for the Vertex class.
+ *
+ * @param in The information/content of the vertex.
+ */
 Vertex::Vertex(string in): info(in) {
-
+    inDegree = 0;
+    outDegree = 0;
+    num = 0;
+    low = 0;
 }
 
-
+/**
+ * @brief Constructor for the Edge class.
+ *
+ * @param d The destination vertex.
+ * @param line The airline associated with the edge.
+ * @param w The distance/weight of the edge.
+ */
 Edge::Edge(Vertex *d, string line,float w): dest(d), airline(line),distance(w) {}
 
 
-
+/**
+ * @brief Get the number of vertices in the graph.
+ *
+ * @return The number of vertices in the graph.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 int Graph::getNumVertex() const {
     return vertexSet.size();
 }
 
-
+/**
+ * @brief Gets the vector of vertices in the graph.
+ *
+ * @return The vector of vertices.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 vector<Vertex * > Graph::getVertexSet() const {
     return vertexSet;
 }
 
-
+/**
+ * @brief Gets the information/content of the vertex.
+ *
+ * @return The information/content of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 string Vertex::getInfo() const {
     return info;
 }
 
+/**
+ * @brief Sets the information/content of the vertex.
+ *
+ * @param in The new information/content of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setInfo(string in) {
     Vertex::info = in;
 }
 
+/**
+ * @brief Checks if the vertex is in processing state.
+ *
+ * @return True if the vertex is in processing state, false otherwise.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 bool Vertex::isProcessing() const {
     return processing;
 }
 
+/**
+ * @brief Gets the destination vertex of the edge.
+ *
+ * @return The destination vertex of the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setProcessing(bool p) {
     Vertex::processing = p;
 }
 
+
+/**
+ * @brief Gets the destination vertex of the edge.
+ *
+ * @return The destination vertex of the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 Vertex *Edge::getDest() const {
     return dest;
 }
-
+/**
+ * @brief Sets the destination vertex of the edge.
+ *
+ * @param d The new destination vertex of the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Edge::setDest(Vertex *d) {
     Edge::dest = d;
 }
 
+/**
+ * @brief Gets the distance/weight of the edge.
+ *
+ * @return The distance/weight of the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 float Edge::getDistance() const {
     return distance;
 }
 
+/**
+ * @brief Sets the distance/weight of the edge.
+ *
+ * @param weight The new distance/weight of the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Edge::setDistance(float weight) {
     Edge::distance = distance;
 }
 
+/**
+ * @brief Sets the airline associated with the edge.
+ *
+ * @param line The new airline associated with the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Edge::setAirline(string line) {
     Edge::airline = line;
 }
 
+/**
+ * @brief Gets the airline associated with the edge.
+ *
+ * @return The airline associated with the edge.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 string Edge::getAirline() {
     return airline;
 }
 
-Graph::Graph(std::unordered_map<std::string, Airport> airports) {
+/**
+ * @brief Constructor for the Graph class.
+ *
+ * @param airports The map of airports.
+ */
+Graph::Graph(unordered_map<string, Airport> airports) {
     for(auto airport:airports){
         addVertex(airport.first);
     }
@@ -75,10 +172,16 @@ Graph::Graph(std::unordered_map<std::string, Airport> airports) {
 Graph::Graph() {
 }
 
-/*
- * Auxiliary function to find a vertex with a given content.
- */
 
+/**
+ * @brief Finds a vertex with a given content.
+ *
+ * @param in The content of the vertex.
+ *
+ * @return A pointer to the vertex if found, otherwise nullptr.
+ *
+ * @complexity Time Complexity: O(V), where V is the number of vertices in the graph.
+ */
 Vertex * Graph::findVertex(const string &in) const {
     for (auto v : vertexSet)
         if (v->info == in)
@@ -86,58 +189,144 @@ Vertex * Graph::findVertex(const string &in) const {
     return NULL;
 }
 
+/**
+ * @brief Checks if the vertex is visited.
+ *
+ * @return True if the vertex is visited, false otherwise.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 bool Vertex::isVisited() const {
     return visited;
 }
 
+/**
+ * @brief Gets the outdegree of the vertex.
+ *
+ * @return The outdegree of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 int Vertex::getOutdegree() const {
     return outDegree;
 }
-
+/**
+ * @brief Sets the outdegree of the vertex.
+ *
+ * @param outdegree The new outdegree of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setOutdegree(int outdegree) {
     Vertex::outDegree = outdegree;
 }
-
+/**
+ * @brief Gets the indegree of the vertex.
+ *
+ * @return The indegree of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 int Vertex::getIndegree() const {
     return inDegree;
 }
 
+/**
+ * @brief Sets the indegree of the vertex.
+ *
+ * @param indegree The new indegree of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setIndegree(int indegree) {
     Vertex::inDegree = indegree;
 }
 
+/**
+ * @brief Gets the number of the vertex.
+ *
+ * @return The number of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 int Vertex::getNum() const {
     return num;
 }
 
+/**
+ * @brief Sets the number of the vertex.
+ *
+ * @param num The new number of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setNum(int num) {
     Vertex::num = num;
 }
 
+/**
+ * @brief Gets the low of the vertex.
+ *
+ * @return The low of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 int Vertex::getLow() const {
     return low;
 }
 
+/**
+ * @brief Sets the low of the vertex.
+ *
+ * @param low The new low of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setLow(int low) {
     Vertex::low = low;
 }
 
+/**
+ * @brief Sets the visited state of the vertex.
+ *
+ * @param v The new visited state of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setVisited(bool v) {
     Vertex::visited = v;
 }
 
+/**
+ * @brief Gets the adjacent vertices of the vertex.
+ *
+ * @return The adjacent vertices of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 const vector<Edge> &Vertex::getAdj() const {
     return adj;
 }
 
+/**
+ * @brief Sets the adjacent vertices of the vertex.
+ *
+ * @param adj The new adjacent vertices of the vertex.
+ *
+ * @complexity Time Complexity: O(1)
+ */
 void Vertex::setAdj(const vector<Edge> &adj) {
     Vertex::adj = adj;
 }
 
 
-/*
- *  Adds a vertex with a given content or info (in) to a graph (this).
- *  Returns true if successful, and false if a vertex with that content already exists.
+/**
+ * @brief Adds a vertex with a given content to the graph.
+ *
+ * @param in The content of the vertex.
+ * @return True if successful, false if the vertex already exists.
+ *
+ * Time Complexity: O(1)
  */
 bool Graph::addVertex(const string &in) {
     if ( findVertex(in) != NULL)
@@ -147,10 +336,16 @@ bool Graph::addVertex(const string &in) {
 }
 
 
-/*
- * Adds an edge to a graph (this), given the contents of the source and
- * destination vertices and the edge distance (w).
- * Returns true if successful, and false if the source or destination vertex does not exist.
+/**
+ * @brief Adds an edge to the graph.
+ *
+ * @param sourc The source vertex content.
+ * @param dest The destination vertex content.
+ * @param airline The airline associated with the edge.
+ * @param w The distance/weight of the edge.
+ * @return True if successful, false if the source or destination vertex does not exist.
+ *
+ * Time Complexity: O(V), where V is the number of vertices in the graph.
  */
 bool Graph::addEdge(const string &sourc, const string &dest,string airline, float w) {
     auto v1 = findVertex(sourc);
@@ -161,21 +356,29 @@ bool Graph::addEdge(const string &sourc, const string &dest,string airline, floa
     return true;
 }
 
-/*
- * Auxiliary function to add an outgoing edge to a vertex (this),
- * with a given destination vertex (d) and edge distance (w).
+/**
+ * @brief Adds an outgoing edge to a vertex with a given destination vertex and edge distance.
+ *
+ * @param d The destination vertex.
+ * @param airline The airline associated with the edge.
+ * @param w The distance/weight of the edge.
+ *
+ * Time Complexity: O(1)
  */
 void Vertex::addEdge(Vertex *d,string airline, float w) {
     adj.push_back(Edge(d,airline, w));
 }
 
 
-/*
- * Removes an edge from a graph (this).
- * The edge is identified by the source (sourc) and destination (dest) contents.
- * Returns true if successful, and false if such edge does not exist.
+/**
+ * @brief Removes an edge from the graph.
+ *
+ * @param sourc The source vertex content.
+ * @param dest The destination vertex content.
+ * @return True if successful, false if the edge does not exist.
+ *
+ * Time Complexity: O(V), where V is the number of vertices in the graph.
  */
-
 bool Graph::removeEdge(const string &sourc, const string &dest) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
@@ -184,12 +387,14 @@ bool Graph::removeEdge(const string &sourc, const string &dest) {
     return v1->removeEdgeTo(v2);
 }
 
-/*
- * Auxiliary function to remove an outgoing edge (with a given destination (d))
- * from a vertex (this).
- * Returns true if successful, and false if such edge does not exist.
+/**
+ * @brief Removes an outgoing edge from a vertex.
+ *
+ * @param d The destination vertex.
+ * @return True if successful, false if the edge does not exist.
+ *
+ * Time Complexity: O(E), where E is the number of edges in the graph.
  */
-
 bool Vertex::removeEdgeTo(Vertex *d) {
     for (auto it = adj.begin(); it != adj.end(); it++)
         if (it->dest  == d) {
@@ -199,12 +404,15 @@ bool Vertex::removeEdgeTo(Vertex *d) {
     return false;
 }
 
-/*
- *  Removes a vertex with a given content (in) from a graph (this), and
- *  all outgoing and incoming edges.
- *  Returns true if successful, and false if such vertex does not exist.
- */
 
+/**
+ * @brief Removes a vertex and all its outgoing and incoming edges from the graph.
+ *
+ * @param in The content of the vertex to be removed.
+ * @return True if successful, false if the vertex does not exist.
+ *
+ * Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the graph.
+ */
 bool Graph::removeVertex(const string &in) {
     for (auto it = vertexSet.begin(); it != vertexSet.end(); it++)
         if ((*it)->info  == in) {
@@ -219,13 +427,13 @@ bool Graph::removeVertex(const string &in) {
 }
 
 
-/****************** DFS ********************/
-/*
- * Performs a depth-first search (dfs) traversal in a graph (this).
- * Returns a vector with the contents of the vertices by dfs order.
- * Follows the algorithm described in theoretical classes.
+/**
+ * @brief Perform a depth-first search (DFS) in the graph.
+ *
+ * @return Vector of vertex contents in DFS order.
+ *
+ * @complexity Time Complexity: O(N + E), where V is the number of vertices and E is the number of edges.
  */
-
 vector<string> Graph::dfs() const {
     vector<string> res;
     for (auto v : vertexSet)
@@ -236,10 +444,7 @@ vector<string> Graph::dfs() const {
     return res;
 }
 
-/*
- * Auxiliary function that visits a vertex (v) and its adjacent, recursively.
- * Updates a parameter with the list of visited node contents.
- */
+
 
 void Graph::dfsVisit(Vertex *v, vector<string> & res) const {
     v->visited = true;
@@ -252,13 +457,15 @@ void Graph::dfsVisit(Vertex *v, vector<string> & res) const {
 }
 
 
-/****************** DFS ********************/
-/*
- * Performs a depth-first search (dfs) in a graph (this).
- * Returns a vector with the contents of the vertices by dfs order,
- * from the source node.
+/**
+ * @brief Perform a depth-first search (DFS) in the graph from a specific source.
+ *
+ * @param source The source vertex for DFS.
+ *
+ * @return Vector of vertex contents in DFS order.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
  */
-
 vector<string> Graph::dfs(const string  &source) const {
     vector<string> res;
     auto s = findVertex(source);
@@ -273,13 +480,15 @@ vector<string> Graph::dfs(const string  &source) const {
 }
 
 
-/****************** BFS ********************/
-/*
- * Performs a breadth-first search (bfs) in a graph (this), starting
- * from the vertex with the given source contents (source).
- * Returns a vector with the contents of the vertices by bfs order.
+/**
+ * @brief Perform a breadth-first search (BFS) in the graph from a specific source.
+ *
+ * @param source The source vertex for BFS.
+ *
+ * @return Vector of vertex contents in BFS order.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
  */
-
 vector<string> Graph::bfs(const string & source) const {
     vector<string> res;
     auto s = findVertex(source);
@@ -305,17 +514,13 @@ vector<string> Graph::bfs(const string & source) const {
     return res;
 }
 
-
-/****************** isDAG  ********************/
-/*
- * Performs a depth-first search in a graph (this), to determine if the graph
- * is acyclic (acyclic directed graph or DAG).
- * During the search, a cycle is found if an edge connects to a vertex
- * that is being processed in the stack of recursive calls (see theoretical classes).
- * Returns true if the graph is acyclic, and false otherwise.
+/**
+ * @brief Check if the graph is a Directed Acyclic Graph (DAG).
+ *
+ * @return True if the graph is a DAG, false otherwise.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
  */
-
-
 bool Graph::isDAG() const {
     for (auto v : vertexSet) {
         v->visited = false;
@@ -349,8 +554,13 @@ bool Graph::dfsIsDAG(Vertex *v) const {
 }
 
 
-/****************** toposort ********************/
-
+/**
+ * @brief Perform topological sorting of the graph.
+ *
+ * @return Vector of vertex contents in topological order.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 vector<string> Graph::topsort() const {
     vector<string> res;
     queue<Vertex*> temp;
@@ -387,7 +597,16 @@ vector<string> Graph::topsort() const {
     return res;
 }
 
-//Nodes at distance bfs
+/**
+ * @brief Find nodes at a certain distance from a source using BFS.
+ *
+ * @param source The source vertex.
+ * @param k The distance.
+ *
+ * @return Vector of vertex contents at the specified distance.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 
 vector<string> Graph::nodesAtDistanceBFS(const string &source, int k) const {
     vector<string> res;
@@ -420,6 +639,16 @@ vector<string> Graph::nodesAtDistanceBFS(const string &source, int k) const {
     return res;
 }
 
+/**
+ * @brief Perform a depth-first search (DFS) in the graph with a specified maximum number of stops.
+ *
+ * @param maxStops The maximum number of stops allowed in the DFS.
+ * @param res Vector to store pairs of vertices representing the DFS paths.
+ *
+ * @return Vector of pairs of vertices representing the DFS paths.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 vector<pair<string,string>> Graph::dfs(int& maxStops, vector<pair<string,string>>& res) const {
     for (auto v : vertexSet)
         v->setVisited(false);
@@ -429,6 +658,18 @@ vector<pair<string,string>> Graph::dfs(int& maxStops, vector<pair<string,string>
     return res;
 }
 
+
+/**
+ * @brief Helper function for DFS with a specified maximum number of stops.
+ *
+ * @param v The current vertex.
+ * @param res Vector to store pairs of vertices representing the DFS paths.
+ * @param maxStops The maximum number of stops allowed in the DFS.
+ * @param stops The current number of stops.
+ * @param source The source vertex content.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 void Graph::dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops, int stops, const string &source) const {
 
     v->setVisited(true);
@@ -460,6 +701,14 @@ void Graph::dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops,
 
 
 void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &res, int &i);
+
+/**
+ * @brief Find articulation points in the graph.
+ *
+ * @return Set of articulation points.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 unordered_set<string> Graph::articulationPoints() const {
     unordered_set<string> res;
 
@@ -477,6 +726,16 @@ unordered_set<string> Graph::articulationPoints() const {
     return res;
 }
 
+/**
+ * @brief Perform a depth-first search to find articulation points.
+ *
+ * @param v The current vertex.
+ * @param s Stack used in the DFS.
+ * @param l Set to store articulation points.
+ * @param i Counter used in DFS.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
 void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &l, int &i){
     v->setVisited(true);
     v->setNum(i);
@@ -524,7 +783,63 @@ void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &l, int &i){
     }
 }
 
+/**
+     * @brief Find the shortest path between two vertices using BFS.
+     *
+     * @param source The source vertex.
+     * @param destination The destination vertex.
+     *
+     * @return Vector of vertex contents representing the shortest path.
+     *
+     * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+     */
 vector<string> Graph::shortestPathBFS(const string &source, const string &destination) const {
+    unordered_map<string, string> prev;
+    queue<string> queue;
+    unordered_set<string> visited;
+
+    queue.push(source);
+    visited.insert(source);
+
+    while (!queue.empty()) {
+        string node = queue.front();
+        queue.pop();
+
+        if (node == destination) {
+            vector<string> path;
+            for (string s = destination; !s.empty(); s = prev[s]) {
+                path.push_back(s);
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+
+        Vertex* vertex = findVertex(node);
+        for (const Edge& edge : vertex->getAdj()) {
+            string neighbour = edge.getDest()->getInfo();
+            if (visited.find(neighbour) == visited.end()) {
+                queue.push(neighbour);
+                visited.insert(neighbour);
+                prev[neighbour] = node;
+            }
+        }
+    }
+
+    return {};
+}
+
+/**
+ * @brief Find the shortest path between two vertices using BFS with selected airlines.
+ *
+ * @param source The source vertex.
+ * @param destination The destination vertex.
+ * @param selectedAirlines Vector of selected airlines.
+ *
+ * @return Vector of vertex contents representing the shortest path.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
+vector<string> Graph::shortestPathBFS(const string &source, const string &destination,const vector<string> &selectedAirlines) const {
     unordered_map<string, string> prev;
     queue<string> queue;
     unordered_set<string> visited;
@@ -548,7 +863,9 @@ vector<string> Graph::shortestPathBFS(const string &source, const string &destin
         Vertex* vertex = findVertex(node);
         for (const Edge& edge : vertex->getAdj()) {
             string neighbour = edge.getDest()->getInfo();
-            if (visited.find(neighbour) == visited.end()) {
+            string airline = edge.airline;
+
+            if (visited.find(neighbour) == visited.end() && find(selectedAirlines.begin(), selectedAirlines.end(), airline) != selectedAirlines.end()) {
                 queue.push(neighbour);
                 visited.insert(neighbour);
                 prev[neighbour] = node;
@@ -558,39 +875,54 @@ vector<string> Graph::shortestPathBFS(const string &source, const string &destin
 
     return vector<string>();
 }
-vector<string> Graph::shortestPathBFS(const string &source, const string &destination,const std::vector<std::string> &selectedAirlines) const {
-    std::unordered_map<std::string, std::string> prev;
-    std::queue<std::string> queue;
-    std::unordered_set<std::string> visited;
 
-    queue.push(source);
-    visited.insert(source);
 
-    while (!queue.empty()) {
-        std::string node = queue.front();
-        queue.pop();
+/**
+ * @brief Calculate the diameter of the graph, which is the maximum distance between any two vertices.
+ *
+ * @return The diameter of the graph.
+ *
+ * @complexity Time Complexity: O(V * (V + E)), where V is the number of vertices and E is the number of edges.
+ */
+int Graph::calculateDiameter() const {
+    int diameter = 0;
 
-        if (node == destination) {
-            std::vector<std::string> path;
-            for (std::string at = destination; at != ""; at = prev[at]) {
-                path.push_back(at);
-            }
-            std::reverse(path.begin(), path.end());
-            return path;
-        }
-
-        Vertex* vertex = findVertex(node);
-        for (const Edge& edge : vertex->getAdj()) {
-            std::string neighbour = edge.getDest()->getInfo();
-            std::string airline = edge.airline;
-
-            if (visited.find(neighbour) == visited.end() && std::find(selectedAirlines.begin(), selectedAirlines.end(), airline) != selectedAirlines.end()) {
-                queue.push(neighbour);
-                visited.insert(neighbour);
-                prev[neighbour] = node;
-            }
-        }
+    for (auto v : vertexSet) {
+        unordered_set<string> visited;
+        bfsVisitForDiameter(v, diameter, visited);
     }
 
-    return vector<string>();
+    return diameter;
+}
+/**
+ * @brief Helper function for BFS to calculate the diameter of the graph.
+ *
+ * @param start The starting vertex for BFS.
+ * @param diameter Reference to the variable storing the current diameter.
+ * @param visited Set of visited vertices.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+ */
+void Graph::bfsVisitForDiameter(Vertex* start, int& diameter, unordered_set<string>& visited) const {
+    queue<pair<Vertex*, int>> queue;
+
+    queue.push({start, 0});
+    visited.insert(start->getInfo());
+
+    while (!queue.empty()) {
+        auto [v, currentDistance] = queue.front();
+        queue.pop();
+
+        for (auto& e : v->adj) {
+            auto w = e.dest;
+            if (visited.find(w->getInfo()) == visited.end()) {
+                queue.push({w, currentDistance + 1});
+                visited.insert(w->getInfo());
+            }
+        }
+
+        if (currentDistance > diameter) {
+            diameter = currentDistance;
+        }
+    }
 }

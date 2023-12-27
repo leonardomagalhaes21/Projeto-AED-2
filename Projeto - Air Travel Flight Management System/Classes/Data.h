@@ -1,6 +1,3 @@
-//
-// Created by tiago on 18-12-2023.
-//
 
 #ifndef PROJETO2_DATA_H
 #define PROJETO2_DATA_H

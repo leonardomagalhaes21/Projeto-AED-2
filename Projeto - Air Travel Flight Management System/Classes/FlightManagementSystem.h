@@ -1,6 +1,3 @@
-//
-// Created by tiago on 18-12-2023.
-//
 
 #ifndef PROJETO2_FLIGHTMANAGEMENTSYSTEM_H
 #define PROJETO2_FLIGHTMANAGEMENTSYSTEM_H
@@ -39,8 +36,9 @@ public:
     int getNumberOfDestinationsFromAirport(const std::string& airportCode) const;
     int getNumberOfCitiesFromAirport(const std::string &airportCode) const;
     int getNumberOfReachableDestinationsFromAirport(const std::string& airportCode, int maxStops) const;
-    std::vector<std::pair<std::string, std::string>> getMaxTripWithStops() const;
-    std::string getTopAirportWithMostTraffic(int k) const;
+    void getMaxTripWithStops();
+    int calcStopsBFS(Vertex *source, vector<std::pair<std::string, std::string>> &aux);
+    void getTopAirportWithMostTraffic(int k) const;
     unordered_set<string> getEssentialAirports() const;
 
     
@@ -51,11 +49,11 @@ public:
     std::vector<Route> findBestFlightOptionWithGivenAirlines(const std::string& source, const std::string& destination,const std::vector<std::string> &selectedAirlines) const;
 
 private:
-    std::unordered_map<std::string, Airline> airlines;
+    std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines
 
-    std::unordered_map<std::string, Airport> airports;
+    std::unordered_map<std::string, Airport> airports;      ///< Map of airports
 
-    Graph flights = Graph();
+    Graph flights = Graph();                                ///< Graph of flights
 };
 #endif
 

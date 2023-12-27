@@ -1,6 +1,3 @@
-//
-// Created by tiago on 18-12-2023.
-//
 
 #ifndef PROJETO2_POSITION_H
 #define PROJETO2_POSITION_H
@@ -23,9 +20,9 @@ public:
     double haversineDistance(const Position& other) const ;
 
 private:
-    double latitude;
-    double longitude;
-    static double toRadians(double degrees);
+    double latitude;        ///< latitude in degrees
+    double longitude;       ///< longitude in degrees
+    static double toRadians(double degrees);    ///< converts degrees to radians
 };
 
 

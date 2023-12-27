@@ -1,6 +1,4 @@
-//
-// Created by tiago on 18-12-2023.
-//
+
 
 #include "Menu.h"
 #include "Data.h"
@@ -9,48 +7,8 @@
 
 using namespace std;
 
-    //cout << "Loading ..." << endl;
-//    Data d = Data();
-//    FlightManagementSystem fms = FlightManagementSystem(d);
-//    auto b = d.getFlightsGraph().findVertex("OPO");
-//    for (auto a : b->getAdj()) {
-//        cout << a.getDest()->getInfo() <<" -- " << d.getAirlines().find(a.getAirline())->second.getName()  << " -- " <<  d.getAirports().find(a.getDest()->getInfo())->second.getName() << endl;
-//    }
-//
-//    cout << fms.getGlobalNumberOfAirports() << endl;
-//    cout << fms.getGlobalNumberOfFlights() << endl;
-//    cout << fms.getNumberOfFlightsFromAirport("OPO") << endl;
-//    cout << fms.getNumberOfAirlinesFromAirport("OPO") << endl;
-//    cout << fms.getNumberOfFlightsPerCity("Miami") << endl;
-//    cout << fms.getNumberOfFlightsPerAirline("TAP") << endl;
-//    cout << fms.getNumberOfCountriesFromAirport("OPO") << endl;
-//    cout << fms.getNumberOfCountriesFromCity("Miami") << endl;
-//    cout << fms.getNumberOfDestinationsFromAirport("OPO") << endl;
-//    cout << fms.getNumberOfCitiesFromAirport("OPO") << endl;
-//    cout << fms.getNumberOfReachableDestinationsFromAirport("OPO", 1) << endl;
-//    auto vec = fms.getMaxTripWithStops();
-//    for (const auto& a : vec) {
-//        cout << d.getAirports().find(a.first)->second.getName() << " --> " << d.getAirports().find(a.second)->second.getName() << endl;
-//    }
-//    cout << fms.getTopAirportWithMostTraffic(1)  << " -- " << d.getAirports().find(fms.getTopAirportWithMostTraffic(1))->second.getName() << endl;
-//    cout << fms.getEssentialAirports().size() << endl;
-//
-//    for(const auto& flight : fms.findBestFlightOption("OPO", "JFK")){
-//        cout << flight.source << " -> " << flight.target << " (";
-//        for(int j = 0; j < flight.airlines.size(); j++){
-//            cout << flight.airlines[j];
-//            if(j != flight.airlines.size() - 1) {
-//                cout << ", ";
-//            }
-//        }
-//        cout << ")" << endl;
-//    }
-//    cout << endl;
-//    fms.findBestFlightOptionByCity("New York", "Maputo");
-//    fms.findBestFlightOptionByCoordinates(40.01, -8.90, "JFK");
-//    return 0;
 
-    /**
+/**
  * @brief Default constructor for the Menu class.
  *
  * @detail This constructor initializes an instance of the Menu class.
@@ -85,6 +43,14 @@ using namespace std;
         cout << "|__________________________________________________|" << endl;
     }
 
+/**
+ * @brief Display the main menu and handle user interactions.
+ *
+ * @info This method initializes a FlightManagementSystem and Data objects, then displays a menu with different options.
+ * The user can choose options related to airports, statistics, or finding the best flight options.
+ *
+ * @complexity Time complexity: depends on the option chosen by the user.
+ */
 void Menu::showMenu() {
     Data d = Data();
     FlightManagementSystem fms = FlightManagementSystem(d);
@@ -94,7 +60,7 @@ void Menu::showMenu() {
     while (flag) {
         drawTop();
         cout << "| 1. Get from airports                             |" << endl;
-        cout << "| 2. Quantities                                    |" << endl;
+        cout << "| 2. Statistics                                    |" << endl;
         cout << "| 3. Best flight option                            |" << endl;
         cout << "| Q. Exit                                          |" << endl;
         drawBottom();
@@ -176,20 +142,16 @@ void Menu::showMenu() {
                         break;
                     }
                     case '8': {
-                        int n;
+                        int k;
                         cout << "Number of airports: ";
-                        cin >> n;
-                        cout << fms.getTopAirportWithMostTraffic(n) << " -- "
-                             << d.getAirports().find(fms.getTopAirportWithMostTraffic(n))->second.getName() << endl;
+                        cin >> k;
+                        fms.getTopAirportWithMostTraffic(k);
                         break;
                     }
                     case '9': {
 
                         cout << "Number of airports: ";
                         cout<< fms.getEssentialAirports().size();
-//                        for (const auto &a: vec) {
-//                            cout << a << " -- " << d.getAirports().find(a)->second.getName() << endl;
-//                        }
                         break;
                     }
                     case 'Q' : {
@@ -210,7 +172,7 @@ void Menu::showMenu() {
                 cout << "| 3.  Get number of flights per airline            |" << endl;
                 cout << "| 4.  Get number of countries from city            |" << endl;
                 cout << "| 5.  Get max trip with stops                      |" << endl;
-                cout << "| Q.  Exit                                          |" << endl;
+                cout << "| Q.  Exit                                         |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
                 cin >> key2;
@@ -245,11 +207,8 @@ void Menu::showMenu() {
                     }
 
                     case '5': {
-                        auto vec = fms.getMaxTripWithStops();
-                        for (const auto &a: vec) {
-                            cout << d.getAirports().find(a.first)->second.getName() << " --> "
-                                 << d.getAirports().find(a.second)->second.getName() << endl;
-                        }
+                        cout << "Loading... (This is going to take 20-25 seconds)" << endl;
+                        fms.getMaxTripWithStops();
                         break;
                     }
                     case 'Q' : {
@@ -269,7 +228,7 @@ void Menu::showMenu() {
                 cout << "| 1.  Find best flight option                      |" << endl;
                 cout << "| 2.  Find best flight option by city              |" << endl;
                 cout << "| 3.  Find best flight option by coordinates       |" << endl;
-                cout << "| Q.  Exit                                          |" << endl;
+                cout << "| Q.  Exit                                         |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
                 cin >> key5;
@@ -279,7 +238,7 @@ void Menu::showMenu() {
                         drawTop();
                         cout << "| 1.  Code                                         |" << endl;
                         cout << "| 2.  Airport Name                                 |" << endl;
-                        cout << "| Q.  Exit                                          |" << endl;
+                        cout << "| Q.  Exit                                         |" << endl;
                         drawBottom();
                         cout << "Choose an option: ";
                         cin >> key6;
@@ -383,27 +342,3 @@ void Menu::showMenu() {
     }
 }
 
-//
-//                drawTop();
-//                cout << "| 1.  Get global number of airports    |" << endl;
-//                cout << "| 2.  Get global number of flights     |" << endl;
-//                cout << "| 3.  Get number of flights from airport|" << endl;
-//                cout << "| 4.  Get number of airlines from airport|" << endl;
-//                cout << "| 5.  Get number of flights per city   |" << endl;
-//                cout << "| 6.  Get number of flights per airline|" << endl;
-//                cout << "| 7.  Get number of countries from airport|" << endl;
-//                cout << "| 8.  Get number of countries from city|" << endl;
-//                cout << "| 9.  Get number of destinations from airport|" << endl;
-//                cout << "| 10. Get number of cities from airport|" << endl;
-//                cout << "| 11. Get number of reachable destinations from airport|" << endl;
-//                cout << "| 12. Get max trip with stops          |" << endl;
-//                cout << "| 13. Get top airport with most traffic|" << endl;
-//                cout << "| 14. Get essential airports           |" << endl;
-//                cout << "| 15. Find best flight option          |" << endl;
-//                cout << "| 16. Find best flight option by city  |" << endl;
-//                cout << "| 17. Find best flight option by coordinates|" << endl;
-//                cout << "| 18. Exit                             |" << endl;
-//                drawBottom();
-//            }
-//        }
-//    }

@@ -1,6 +1,3 @@
-//
-// Created by tiago on 18-12-2023.
-//
 
 #ifndef PROJETO2_AIRPORT_H
 #define PROJETO2_AIRPORT_H
@@ -22,11 +19,11 @@ public:
     Position getPosition() const;
 
 private:
-    std::string code;
-    std::string name;
-    std::string city;
-    std::string country;
-    Position position;
+    std::string code;       ///< The code of the airport.
+    std::string name;       ///< The name of the airport.
+    std::string city;       ///< The city where the airport is located.
+    std::string country;    ///< The country where the airport is located.
+    Position position;      ///< The geographic position of the airport.
 
 
 };

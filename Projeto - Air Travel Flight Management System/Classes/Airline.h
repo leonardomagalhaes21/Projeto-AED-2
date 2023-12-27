@@ -1,6 +1,4 @@
-//
-// Created by tiago on 18-12-2023.
-//
+
 
 #ifndef PROJETO2_AIRLINE_H
 #define PROJETO2_AIRLINE_H
@@ -19,10 +17,10 @@ public:
     std::string getCountry() const;
 
 private:
-    std::string code;
-    std::string name;
-    std::string callsign;
-    std::string country;
+    std::string code;       ///< The code of the airline.
+    std::string name;       ///< The name of the airline.
+    std::string callsign;   ///< The callsign of the airline.
+    std::string country;    ///< The country of the airline.
 };
 
 
