@@ -77,7 +77,7 @@ void Menu::showMenu() {
                 cout << "| 5. Number of destinations from airport           |" << endl;
                 cout << "| 6. Number of cities from airport                 |" << endl;
                 cout << "| 7. Number of reachable destinations from airport |" << endl;
-                cout << "| 8. Top airport with most traffic                 |" << endl;
+                cout << "| 8. Top airports with most traffic                 |" << endl;
                 cout << "| 9. Essential airports                            |" << endl;
                 cout << "| Q. Exit                                          |" << endl;
                 drawBottom();
