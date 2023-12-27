@@ -137,6 +137,8 @@ void Menu::showMenu() {
                         int stops;
                         cout << "Airport code: ";
                         cin >> airport;
+                        cout << "Max stops: ";
+                        cin >> stops;
                         cout << "Number of reachable destinations from airport " << airport << ": "
                              << fms.getNumberOfReachableDestinationsFromAirport(airport, stops) << endl;
                         break;
