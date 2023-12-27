@@ -186,7 +186,8 @@ void Menu::showMenu() {
                     case '2': {
                         string city;
                         cout << "City: ";
-                        cin >> city;
+                        cin.ignore();
+                        getline(cin, city);
                         cout << "Number of flights per city " << city << ": " << fms.getNumberOfFlightsPerCity(city)
                              << endl;
                         break;
@@ -202,7 +203,8 @@ void Menu::showMenu() {
                     case '4': {
                         string city;
                         cout << "City: ";
-                        cin >> city;
+                        cin.ignore();
+                        getline(cin, city);
                         cout << "Number of countries from city " << city << ": "
                              << fms.getNumberOfCountriesFromCity(city) << endl;
                         break;
