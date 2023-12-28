@@ -72,7 +72,7 @@ void Menu::showMenu() {
                 drawTop();
                 cout << "| 1. Global number of airports                     |" << endl;
                 cout << "| 2. Number of flights/airlines out of airport     |" << endl;
-                cout << "| 3. Number of countries from airport              |" << endl;
+                cout << "| 3. Number of countries flown from airport        |" << endl;
                 cout << "| 4. Number of reachable destinations from airport |" << endl;
                 cout << "| 5. Number of destinations from airport with stops|" << endl;
                 cout << "| 6. Top airports with most traffic                |" << endl;
@@ -101,7 +101,7 @@ void Menu::showMenu() {
                         string airport;
                         cout << "Airport code: ";
                         cin >> airport;
-                        cout << "Number of countries from " << airport << ": "
+                        cout << "Number of countries flown from " << airport << ": "
                              << fms.getNumberOfCountriesFromAirport(airport) << endl;
                         break;
                     }
@@ -121,8 +121,7 @@ void Menu::showMenu() {
                         cin >> airport;
                         cout << "Max stops: ";
                         cin >> stops;
-                        cout << "Number of reachable destinations from airport " << airport << ": "
-                             << fms.getNumberOfReachableDestinationsFromAirportWithStops(airport, stops) << endl;
+                        fms.numberOfReachableDestinationsFromAirportWithStops(airport, stops);
                         break;
                     }
                     case '6': {
@@ -157,7 +156,7 @@ void Menu::showMenu() {
                 cout << "| 1.  Get global number of flights                 |" << endl;
                 cout << "| 2.  Get number of flights per city               |" << endl;
                 cout << "| 3.  Get number of flights per airline            |" << endl;
-                cout << "| 4.  Get number of countries from city            |" << endl;
+                cout << "| 4.  Get number of countries flown from city      |" << endl;
                 cout << "| 5.  Get max trip with stops                      |" << endl;
                 cout << "| Q.  Exit                                         |" << endl;
                 drawBottom();
@@ -183,7 +182,7 @@ void Menu::showMenu() {
                         getline(cin, city);
                         cout << "Country: ";
                         getline(cin, country);
-                        cout << "Number of countries from " << city << " (" << country << "): "
+                        cout << "Number of countries flown from " << city << " (" << country << "): "
                              << fms.getNumberOfCountriesFromCity(city, country) << endl;
                         break;
                     }
