@@ -910,7 +910,9 @@ void Graph::bfsVisitForDiameter(Vertex* start, int& diameter, unordered_set<stri
     visited.insert(start->getInfo());
 
     while (!queue.empty()) {
-        auto [v, currentDistance] = queue.front();
+        auto front = queue.front();
+        Vertex* v = front.first;
+        int currentDistance = front.second;
         queue.pop();
 
         for (auto& e : v->adj) {

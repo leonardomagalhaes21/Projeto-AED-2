@@ -86,7 +86,6 @@ class Graph {
     stack<Vertex> _stack_;           // auxiliary field
     list<list<string>> _list_sccs_;        // auxiliary field
 
-    void dfsVisit(Vertex *v,  vector<string> & res) const;
     bool dfsIsDAG(Vertex *v) const;
 public:
     Vertex *findVertex(const string &in) const;
@@ -97,6 +96,7 @@ public:
     bool removeEdge(const string &sourc, const string &dest);
     vector<Vertex * > getVertexSet() const;
     vector<string> dfs() const;
+    void dfsVisit(Vertex *v,  vector<string> & res) const;
     vector<string> dfs(const string & source) const;
     vector<string> bfs(const string &source) const;
     vector<string> topsort() const;

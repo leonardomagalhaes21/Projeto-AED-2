@@ -71,14 +71,12 @@ void Menu::showMenu() {
                 char key1;
                 drawTop();
                 cout << "| 1. Global number of airports                     |" << endl;
-                cout << "| 2. Number of flights from airport                |" << endl;
-                cout << "| 3. Number of airlines from airport               |" << endl;
-                cout << "| 4. Number of countries from airport              |" << endl;
-                cout << "| 5. Number of destinations from airport           |" << endl;
-                cout << "| 6. Number of cities from airport                 |" << endl;
-                cout << "| 7. Number of reachable destinations from airport |" << endl;
-                cout << "| 8. Top airports with most traffic                 |" << endl;
-                cout << "| 9. Essential airports                            |" << endl;
+                cout << "| 2. Number of flights/airlines out of airport     |" << endl;
+                cout << "| 3. Number of countries from airport              |" << endl;
+                cout << "| 4. Number of reachable destinations from airport |" << endl;
+                cout << "| 5. Number of destinations from airport with stops|" << endl;
+                cout << "| 6. Top airports with most traffic                |" << endl;
+                cout << "| 7. Essential airports                            |" << endl;
                 cout << "| Q. Exit                                          |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
@@ -92,8 +90,10 @@ void Menu::showMenu() {
                         string airport;
                         cout << "Airport code: ";
                         cin >> airport;
-                        cout << "Number of flights from airport " << airport << ": "
+                        cout << "Number of flights out of " << airport << ": "
                              << fms.getNumberOfFlightsFromAirport(airport) << endl;
+                        cout << "Number of airlines out of " << airport << ": "
+                             << fms.getNumberOfAirlinesFromAirport(airport) << endl;
                         break;
                     }
 
@@ -101,38 +101,20 @@ void Menu::showMenu() {
                         string airport;
                         cout << "Airport code: ";
                         cin >> airport;
-                        cout << "Number of airlines from airport " << airport << ": "
-                             << fms.getNumberOfAirlinesFromAirport(airport) << endl;
+                        cout << "Number of countries from " << airport << ": "
+                             << fms.getNumberOfCountriesFromAirport(airport) << endl;
                         break;
                     }
-
 
                     case '4': {
                         string airport;
                         cout << "Airport code: ";
                         cin >> airport;
-                        cout << "Number of countries from airport " << airport << ": "
-                             << fms.getNumberOfCountriesFromAirport(airport) << endl;
+                        fms.numberOfReachableDestinationsFromAirport(airport);
                         break;
                     }
 
                     case '5': {
-                        string airport;
-                        cout << "Airport code: ";
-                        cin >> airport;
-                        cout << "Number of destinations from airport " << airport << ": "
-                             << fms.getNumberOfDestinationsFromAirport(airport) << endl;
-                        break;
-                    }
-                    case '6': {
-                        string airport;
-                        cout << "Airport code: ";
-                        cin >> airport;
-                        cout << "Number of cities from airport " << airport << ": "
-                             << fms.getNumberOfCitiesFromAirport(airport) << endl;
-                        break;
-                    }
-                    case '7': {
                         string airport;
                         int stops;
                         cout << "Airport code: ";
@@ -140,20 +122,23 @@ void Menu::showMenu() {
                         cout << "Max stops: ";
                         cin >> stops;
                         cout << "Number of reachable destinations from airport " << airport << ": "
-                             << fms.getNumberOfReachableDestinationsFromAirport(airport, stops) << endl;
+                             << fms.getNumberOfReachableDestinationsFromAirportWithStops(airport, stops) << endl;
                         break;
                     }
-                    case '8': {
+                    case '6': {
                         int k;
                         cout << "Number of airports: ";
                         cin >> k;
                         fms.getTopAirportWithMostTraffic(k);
                         break;
                     }
-                    case '9': {
-
+                    case '7': {
                         cout << "Number of airports: ";
-                        cout<< fms.getEssentialAirports().size();
+                        auto essential = fms.getEssentialAirports();
+                        cout<< essential.size() << endl;
+                        for (const auto& airport : essential){
+                            cout << airport << " (" << d.getAirports().find(airport)->second.getName() << ")" <<endl;
+                        }
                         break;
                     }
                     case 'Q' : {
@@ -184,29 +169,22 @@ void Menu::showMenu() {
                         break;
                     }
                     case '2': {
-                        string city;
-                        cout << "City: ";
-                        cin.ignore();
-                        getline(cin, city);
-                        cout << "Number of flights per city " << city << ": " << fms.getNumberOfFlightsPerCity(city)
-                             << endl;
+                        fms.numberOfFlightsPerCity();
                         break;
                     }
                     case '3': {
-                        string airline;
-                        cout << "Airline: ";
-                        cin >> airline;
-                        cout << "Number of flights per airline " << airline << ": "
-                             << fms.getNumberOfFlightsPerAirline(airline) << endl;
+                        fms.numberOfFlightsPerAirline();
                         break;
                     }
                     case '4': {
-                        string city;
+                        string city, country;
                         cout << "City: ";
                         cin.ignore();
                         getline(cin, city);
-                        cout << "Number of countries from city " << city << ": "
-                             << fms.getNumberOfCountriesFromCity(city) << endl;
+                        cout << "Country: ";
+                        getline(cin, country);
+                        cout << "Number of countries from " << city << " (" << country << "): "
+                             << fms.getNumberOfCountriesFromCity(city, country) << endl;
                         break;
                     }
 

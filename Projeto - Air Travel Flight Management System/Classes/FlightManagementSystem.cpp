@@ -36,12 +36,12 @@ int FlightManagementSystem::getGlobalNumberOfAirports() const {
  *
  * @return The total number of flights in the system.
  *
- * @complexity Time complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ * @complexity Time complexity: O(V), where V is the number of vertices in the flights graph.
  */
 int FlightManagementSystem::getGlobalNumberOfFlights() const {
     int count = 0;
     for (auto vertex : flights.getVertexSet()) {
-        count += (int) vertex->getAdj().size();
+        count += vertex->getOutdegree();
     }
     return count;
 }
@@ -53,12 +53,12 @@ int FlightManagementSystem::getGlobalNumberOfFlights() const {
  *
  * @return The number of flights departing from the specified airport.
  *
- * @complexity Time Complexity: O(E), where E is the number of edges in the flights graph.
+ * @complexity Time Complexity: O(1)
  */
 int FlightManagementSystem::getNumberOfFlightsFromAirport(const string& airportCode) const {
     auto vertex = flights.findVertex(airportCode);
 
-    return (int) vertex->getAdj().size();
+    return vertex->getOutdegree();
 }
 
 /**
@@ -83,41 +83,46 @@ int FlightManagementSystem::getNumberOfAirlinesFromAirport(const string &airport
 /**
  * @brief Get the number of flights departing from a specific city.
  *
- * @param city The name of the city.
- *
  * @return The number of flights departing from the specified city.
  *
- * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ * @complexity Time Complexity: O(V), where V is the number of vertices in the flights graph.
  */
-int FlightManagementSystem::getNumberOfFlightsPerCity(const string &city) const {
-    int count = 0;
+void FlightManagementSystem::numberOfFlightsPerCity() const {
+    map<pair<string, string>, int> cityFlights;
+
     for(auto vertex : flights.getVertexSet()) {
-        if (airports.find(vertex->getInfo())->second.getCity() == city) {
-            count += (int) vertex->getAdj().size();
-        }
+        string city = airports.find(vertex->getInfo())->second.getCity();
+        string country = airports.find(vertex->getInfo())->second.getCountry();
+        auto pair = make_pair(city, country);
+        int degree = vertex->getOutdegree() + vertex->getIndegree();
+        cityFlights[pair] += degree;
     }
-    return count;
+
+    for(const auto& pair : cityFlights) {
+        cout << "City: " << pair.first.first << " (" << pair.first.second << ") -- " << pair.second << " flights" << endl;
+    }
 }
 
 /**
  * @brief Get the number of flights operated by a specific airline.
  *
- * @param airline The code of the airline.
- *
  * @return The number of flights operated by the specified airline.
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-int FlightManagementSystem::getNumberOfFlightsPerAirline(const string &airline) const {
-    int count = 0;
+void FlightManagementSystem::numberOfFlightsPerAirline() const {
+    map<string, int> airlineFlights;
+
     for(auto vertex : flights.getVertexSet()) {
-        for (auto edge : vertex->getAdj()) {
-            if (edge.getAirline() == airline) {
-                count++;
-            }
+        for(auto edge : vertex->getAdj()) {
+            string airline = edge.getAirline();
+            airlineFlights[airline]++;
         }
     }
-    return count;
+
+    for(const auto& pair : airlineFlights) {
+        cout << "Airline: " << pair.first << " (" << airlines.find(pair.first)->second.getName() << ") -- " << pair.second << " flights" << endl;
+    }
 }
 
 /**
@@ -139,18 +144,19 @@ int FlightManagementSystem::getNumberOfCountriesFromAirport(const string &airpor
 }
 
 /**
- * @brief Get the number of countries connected to a specific city.
+ * @brief Get the number of countries connected to a specific city in a specific country.
  *
  * @param city The name of the city.
+ * @param country The name of the country where the city is located.
  *
  * @return The number of unique countries connected to the specified city.
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-int FlightManagementSystem::getNumberOfCountriesFromCity(const string &city) const {
+int FlightManagementSystem::getNumberOfCountriesFromCity(const string &city, const string &country) const {
     set<string> countries;
-    for(auto vertex : flights.getVertexSet()) {
-        if (airports.find(vertex->getInfo())->second.getCity() == city) {
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == city && airports.find(vertex->getInfo())->second.getCountry() == country){
             for (const auto& edge : vertex->getAdj()) {
                 countries.insert(airports.find(edge.getDest()->getInfo())->second.getCountry());
             }
@@ -160,39 +166,31 @@ int FlightManagementSystem::getNumberOfCountriesFromCity(const string &city) con
 }
 
 /**
- * @brief Get the number of destinations connected to a specific airport.
+ * @brief Prints the number of airports, cities, and countries reachable from a given airport.
  *
  * @param airportCode The code of the airport.
  *
- * @return The number of unique destinations connected to the specified airport.
- *
- * @complexity Time Complexity: O(E), where E is the number of edges in the flights graph.
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-int FlightManagementSystem::getNumberOfDestinationsFromAirport(const string &airportCode) const {
+void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std::string &airportCode) const {
     auto vertex = flights.findVertex(airportCode);
-    set<string> destinations;
-    for (const auto& edge : vertex->getAdj()) {
-        destinations.insert(edge.getDest()->getInfo());
-    }
-    return (int) destinations.size();
-}
+    vector<string> destinations;
+    flights.dfsVisit(vertex, destinations);
 
-/**
- * @brief Get the number of cities connected to a specific airport.
- *
- * @param airportCode The code of the airport.
- *
- * @return The number of unique cities connected to the specified airport.
- *
- * @complexity Time Complexity: O(E), where E is the number of edges in the flights graph.
- */
-int FlightManagementSystem::getNumberOfCitiesFromAirport(const string &airportCode) const {
-    auto vertex = flights.findVertex(airportCode);
-    set<string> cities;
-    for (const auto& edge : vertex->getAdj()) {
-        cities.insert(airports.find(edge.getDest()->getInfo())->second.getCity());
+    set<string> airports;
+    set<pair<string, string>> cities;
+    set<string> countries;
+
+    for (const auto& code : destinations) {
+        const auto& airport = this->airports.find(code)->second;
+        airports.insert(code);
+        cities.insert(make_pair(airport.getCity(), airport.getCountry()));
+        countries.insert(airport.getCountry());
     }
-    return (int) cities.size();
+
+    cout << "Number of airports from " << airportCode << ": " << airports.size() << endl;
+    cout << "Number of cities from " << airportCode << ": " << cities.size() << endl;
+    cout << "Number of countries from " << airportCode << ": " << countries.size() << endl;
 }
 
 /**
@@ -205,7 +203,7 @@ int FlightManagementSystem::getNumberOfCitiesFromAirport(const string &airportCo
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-int FlightManagementSystem::getNumberOfReachableDestinationsFromAirport(const string &airportCode, int maxStops) const {
+int FlightManagementSystem::getNumberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const {
     vector<string> destinations = flights.nodesAtDistanceBFS(airportCode, maxStops+1);
 
     return (int) destinations.size() - 1;
@@ -228,8 +226,9 @@ void FlightManagementSystem::getMaxTripWithStops() {
     }
 
     cout << "Maximum Trips have " << maxStops << " stops: " << endl;
-    for (const auto& airports : maxTripAirports) {
-        cout << airports.first << " --> " << airports.second << endl;
+    for (const auto& a : maxTripAirports) {
+        cout << a.first << " (" << airports.find(a.first)->second.getName() << ") --> "
+        << a.second << " (" << airports.find(a.second)->second.getName() << ")" << endl;
     }
 }
 
