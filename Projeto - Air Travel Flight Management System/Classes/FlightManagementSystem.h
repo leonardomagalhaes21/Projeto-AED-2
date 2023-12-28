@@ -35,7 +35,7 @@ public:
     int getNumberOfCountriesFromAirport(const std::string& airportCode) const;
     int getNumberOfCountriesFromCity(const std::string& city, const std::string &country) const;
     void numberOfReachableDestinationsFromAirport(const std::string &airportCode) const;
-    int getNumberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const;
+    void numberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const;
     void getMaxTripWithStops();
     int calcStopsBFS(Vertex *source, vector<std::pair<std::string, std::string>> &aux);
     void getTopAirportWithMostTraffic(int k) const;

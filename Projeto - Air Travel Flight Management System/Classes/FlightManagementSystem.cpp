@@ -177,6 +177,10 @@ void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std:
     vector<string> destinations;
     flights.dfsVisit(vertex, destinations);
 
+    for (auto v : flights.getVertexSet()) {
+        v->setVisited(false);
+    }
+
     set<string> airports;
     set<pair<string, string>> cities;
     set<string> countries;
@@ -188,9 +192,22 @@ void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std:
         countries.insert(airport.getCountry());
     }
 
-    cout << "Number of airports from " << airportCode << ": " << airports.size() << endl;
-    cout << "Number of cities from " << airportCode << ": " << cities.size() << endl;
-    cout << "Number of countries from " << airportCode << ": " << countries.size() << endl;
+    bool flagCity = true;
+    bool flagCountry = true;
+    for (const auto& code : airports) {
+        if (code != airportCode){
+            if (this->airports.find(code)->second.getCity() == this->airports.find(airportCode)->second.getCity()) {
+                flagCity = false;
+            }
+            if (this->airports.find(code)->second.getCountry() == this->airports.find(airportCode)->second.getCountry()) {
+                flagCountry = false;
+            }
+        }
+    }
+
+    cout << "Number of airports from " << airportCode << ": " << airports.size() - 1 << endl;
+    cout << "Number of cities from " << airportCode << ": " << cities.size() - (int) flagCity << endl;
+    cout << "Number of countries from " << airportCode << ": " << countries.size() - (int) flagCountry << endl;
 }
 
 /**
@@ -203,10 +220,40 @@ void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std:
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-int FlightManagementSystem::getNumberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const {
+void FlightManagementSystem::numberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const {
     vector<string> destinations = flights.nodesAtDistanceBFS(airportCode, maxStops+1);
 
-    return (int) destinations.size() - 1;
+    for (auto v : flights.getVertexSet()) {
+        v->setVisited(false);
+    }
+
+    set<string> airports;
+    set<pair<string, string>> cities;
+    set<string> countries;
+
+    for (const auto& code : destinations) {
+        const auto& airport = this->airports.find(code)->second;
+        airports.insert(code);
+        cities.insert(make_pair(airport.getCity(), airport.getCountry()));
+        countries.insert(airport.getCountry());
+    }
+
+    bool flagCity = true;
+    bool flagCountry = true;
+    for (const auto& code : airports) {
+        if (code != airportCode){
+            if (this->airports.find(code)->second.getCity() == this->airports.find(airportCode)->second.getCity()) {
+                flagCity = false;
+            }
+            if (this->airports.find(code)->second.getCountry() == this->airports.find(airportCode)->second.getCountry()) {
+                flagCountry = false;
+            }
+        }
+    }
+
+    cout << "Number of reachable airports: " << airports.size() - 1 << endl;
+    cout << "Number of reachable cities: " << cities.size() - (int) flagCity << endl;
+    cout << "Number of reachable countries: " << countries.size() - (int) flagCountry << endl;
 }
 
 void FlightManagementSystem::getMaxTripWithStops() {
@@ -323,13 +370,13 @@ vector<Route> FlightManagementSystem::findBestFlightOption(const string &source,
     vector<Route> res;
     for(int i = 0; i < path.size()-1; i++){
         Vertex* s = flights.findVertex(path[i]);
-        vector<string> FlightAirlines;
+        vector<string> flightAirlines;
         for(auto edge : s->getAdj()){
             if(edge.getDest()->getInfo() == path[i+1]){
-                FlightAirlines.push_back(edge.getAirline());
+                flightAirlines.push_back(edge.getAirline());
             }
         }
-        Route route = {path[i], path[i+1], FlightAirlines};
+        Route route = {path[i], path[i+1], flightAirlines};
         res.push_back(route);
     }
     return res;
@@ -376,7 +423,7 @@ void FlightManagementSystem::findBestFlightOptionByAirportName(const string &sou
  *
  * @return A vector containing the best flight option between the two cities.
  *
- * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ * @complexity Time Complexity: O(V² + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
 void FlightManagementSystem::findBestFlightOptionByCity(const string &sourceCity, const string &sourceCountry, const string &destinationCity, const string &destinationCountry) const {
     vector<string> sourceCodes;
@@ -389,25 +436,23 @@ void FlightManagementSystem::findBestFlightOptionByCity(const string &sourceCity
             destinationCodes.push_back(vertex->getInfo());
         }
     }
-    int i = 0;
-    int j = 0;
-    while(i < sourceCodes.size()){
-
-        cout << "Option " << i+1 << ": " << endl;
-        for(const auto& flight : findBestFlightOption(sourceCodes[i], destinationCodes[j])){
-            cout << flight.source << " -> " << flight.target << " (";
-            for(int p = 0; p < flight.airlines.size(); p++){
-                cout << flight.airlines[p];
-                if(p != flight.airlines.size() - 1) {
-                    cout << ", ";
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        for (const auto& destination : destinationCodes){
+            cout << "Option " << option << ": " << endl;
+            for(const auto& flight : findBestFlightOption(source,destination)){
+                cout << flight.source << " -> " << flight.target << " (";
+                for(int j = 0; j < flight.airlines.size(); j++){
+                    cout << flight.airlines[j];
+                    if(j != flight.airlines.size() - 1) {
+                        cout << ", ";
+                    }
                 }
+                cout << ")" << endl;
             }
-            cout << ")" << endl;
+            cout << endl;
+            option++;
         }
-        cout << endl;
-        i++;
-        if(j < destinationCodes.size()-1)
-        j++;
     }
 }
 
