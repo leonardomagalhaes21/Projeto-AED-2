@@ -114,8 +114,15 @@ void Data::createFlightsGraph(const string& filename){
         Position p1 = airports.find(source)->second.getPosition();
         Position p2 = airports.find(target)->second.getPosition();
         flights.addEdge(source, target, airline, p1.haversineDistance(p2));
-        flights.findVertex(source)->setIndegree(flights.findVertex(source)->getIndegree()+1);
-        flights.findVertex(target)->setOutdegree(flights.findVertex(target)->getOutdegree()+1);
+    }
+    for (auto vertex : flights.getVertexSet()){
+        vertex->setOutdegree((int) vertex->getAdj().size());
+        vertex->setIndegree(0);
+    }
+    for (auto vertex : flights.getVertexSet()){
+        for (const auto& edge : vertex->getAdj()){
+            edge.getDest()->setIndegree(edge.getDest()->getIndegree() + 1);
+        }
     }
 }
 

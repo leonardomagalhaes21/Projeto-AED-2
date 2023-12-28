@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 
 #include "Data.h"
 #include "Graph.h"
@@ -29,13 +30,12 @@ public:
     int getGlobalNumberOfFlights() const;
     int getNumberOfFlightsFromAirport(const std::string& airportCode) const;
     int getNumberOfAirlinesFromAirport(const std::string& airportCode) const;
-    int getNumberOfFlightsPerCity(const std::string& city) const;
-    int getNumberOfFlightsPerAirline(const std::string& airline) const;
+    void numberOfFlightsPerCity() const;
+    void numberOfFlightsPerAirline() const;
     int getNumberOfCountriesFromAirport(const std::string& airportCode) const;
-    int getNumberOfCountriesFromCity(const std::string& city) const;
-    int getNumberOfDestinationsFromAirport(const std::string& airportCode) const;
-    int getNumberOfCitiesFromAirport(const std::string &airportCode) const;
-    int getNumberOfReachableDestinationsFromAirport(const std::string& airportCode, int maxStops) const;
+    int getNumberOfCountriesFromCity(const std::string& city, const std::string &country) const;
+    void numberOfReachableDestinationsFromAirport(const std::string &airportCode) const;
+    int getNumberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const;
     void getMaxTripWithStops();
     int calcStopsBFS(Vertex *source, vector<std::pair<std::string, std::string>> &aux);
     void getTopAirportWithMostTraffic(int k) const;
