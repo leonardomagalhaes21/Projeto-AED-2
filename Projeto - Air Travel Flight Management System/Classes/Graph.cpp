@@ -793,7 +793,7 @@ void dfs_art(Vertex *v, stack<string> &s, unordered_set<string> &l, int &i){
      *
      * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
      */
-vector<vector<string>> Graph::shortestPathBFS(const string &source, const string &destination) const {
+vector<vector<string>> Graph::shortestPathsBFS(const string &source, const string &destination) const {
     vector<vector<string>> paths;
     queue<vector<string>> queue;
     unordered_set<string> visited;
