@@ -62,6 +62,7 @@ void Menu::showMenu() {
         cout << "| 1. Get from airports                             |" << endl;
         cout << "| 2. Statistics                                    |" << endl;
         cout << "| 3. Best flight option                            |" << endl;
+        cout << "| 4. Personalized preferences                      |" << endl;
         cout << "| Q. Exit                                          |" << endl;
         drawBottom();
         cout << "Choose an option: ";
@@ -560,6 +561,58 @@ void Menu::showMenu() {
                 };
                 break;
 
+            }
+            case '4' : {
+                char key12;
+                drawTop();
+                cout << "| 1.  Best flight option with selected airlines    |" << endl;
+                cout << "| Q.  Exit                                         |" << endl;
+                drawBottom();
+                cout << "Choose an option: ";
+                cin >> key12;
+                switch(key12){
+                    case '1': {
+                        string source, target;
+                        cout << "Source airport code: ";
+                        cin >> source;
+                        cout << "Target airport code: ";
+                        cin >> target;
+
+                        vector<string> airlines;
+                        string airline;
+                        char key14 = 'Y';
+
+                        while (key14 == 'Y') {
+                            cout << "Enter airline code: ";
+                            cin >> airline;
+                            airlines.push_back(airline);
+
+                            cout << "Add more? (Y/N): ";
+                            cin >> key14;
+                        }
+                        cin.ignore();
+                        cout << endl;
+
+
+                        auto vec = fms.findBestFlightOptionsWithGivenAirlines(source, target, airlines);
+                        for(int i = 0; i < vec.size(); i++){
+                            for(const auto& flight : vec[i]){
+                                fms.printRoute(flight);
+                            }
+                            if (i != vec.size() -1) {
+                                cout << endl << '\t' << '\t' << "Or..." << endl;
+                            }
+                        }
+                        break;
+                    }
+                    case 'Q' : {
+                        break;
+                    }
+                    default: {
+                        cout << endl << "Invalid option!" << endl;
+                    }
+                };
+                break;
             }
             case 'Q' : {
                 flag = false;

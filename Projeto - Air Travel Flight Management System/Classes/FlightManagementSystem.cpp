@@ -841,21 +841,38 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-vector<Route> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination,
-                                                                             const vector<string> &selectedAirlines) const {
-    auto path = flights.shortestPathBFS(source, destination,selectedAirlines);
-    vector<Route> res;
-    for(int i = 0; i < path.size()-1; i++){
-        Vertex* s = flights.findVertex(path[i]);
-        vector<string> FlightAirlines;
-        for(auto edge : s->getAdj()){
-            if(edge.getDest()->getInfo() == path[i+1]){
-                FlightAirlines.push_back(edge.getAirline());
+vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
+    auto paths = flights.shortestPathsBFS(source, destination, selectedAirlines);
+    vector<vector<Route>> allOptions;
+
+    int minStops = INT_MAX;
+    for (const auto& path : paths) {
+        if (path.size() - 1 < minStops) {
+            minStops = path.size() - 1;
+        }
+    }
+
+    for (const auto& path : paths) {
+        if (path.size() - 1 == minStops) {
+            vector<Route> routePath;
+            for (int i = 0; i < path.size() - 1; i++) {
+                Vertex* s = flights.findVertex(path[i]);
+                vector<string> flightAirlines;
+                for (auto edge : s->getAdj()) {
+                    if (edge.getDest()->getInfo() == path[i + 1] && find(selectedAirlines.begin(), selectedAirlines.end(), edge.getAirline()) != selectedAirlines.end()) {
+                        flightAirlines.push_back(edge.getAirline());
+                    }
+                }
+                if (!flightAirlines.empty()) {
+                    Route route = {path[i], path[i + 1], flightAirlines};
+                    routePath.push_back(route);
+                }
+            }
+            if (!routePath.empty()) {
+                allOptions.push_back(routePath);
             }
         }
-        Route route = {path[i], path[i+1], FlightAirlines};
-        res.push_back(route);
     }
-    return res;
-}
 
+    return allOptions;
+}
