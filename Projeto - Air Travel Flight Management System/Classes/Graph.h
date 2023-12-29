@@ -109,7 +109,8 @@ public:
     void dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops, int stops, const string &source) const;
     unordered_set<string> articulationPoints() const;
     vector<vector<string>> shortestPathsBFS(const string &source, const string &destination) const;
-    vector<string> shortestPathBFS(const string &source, const string &destination,const std::vector<std::string> &selectedAirlines) const;
+    vector<vector<string>> shortestPathsBFS(const string &source, const string &destination,
+                                                   const vector<string> &selectedAirlines) const;
 
     void bfsVisitForDiameter(Vertex *start, int &diameter, unordered_set<std::string> &visited) const;
 

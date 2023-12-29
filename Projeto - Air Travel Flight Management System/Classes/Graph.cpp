@@ -848,41 +848,51 @@ vector<vector<string>> Graph::shortestPathsBFS(const string &source, const strin
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
  */
-vector<string> Graph::shortestPathBFS(const string &source, const string &destination,const vector<string> &selectedAirlines) const {
-    unordered_map<string, string> prev;
-    queue<string> queue;
+vector<vector<string>> Graph::shortestPathsBFS(const string &source, const string &destination,
+                                               const vector<string> &selectedAirlines) const {
+    vector<vector<string>> paths;
+    queue<vector<string>> queue;
     unordered_set<string> visited;
 
-    queue.push(source);
-    visited.insert(source);
+    vector<string> path = {source};
+    queue.push(path);
+
+    int minLength = INT_MAX;
 
     while (!queue.empty()) {
-        string node = queue.front();
+        path = queue.front();
         queue.pop();
+        string node = path.back();
 
         if (node == destination) {
-            vector<string> path;
-            for (string at = destination; at != ""; at = prev[at]) {
-                path.push_back(at);
+            if (path.size() < minLength) {
+                paths.clear();
+                minLength = path.size();
             }
-            reverse(path.begin(), path.end());
-            return path;
+            paths.push_back(path);
+        }
+
+        if (path.size() > minLength) {
+            break;
         }
 
         Vertex* vertex = findVertex(node);
-        for (const Edge& edge : vertex->getAdj()) {
+        for (const Edge& edge : vertex->adj) {
             string neighbour = edge.getDest()->getInfo();
             string airline = edge.airline;
-
-            if (visited.find(neighbour) == visited.end() && find(selectedAirlines.begin(), selectedAirlines.end(), airline) != selectedAirlines.end()) {
-                queue.push(neighbour);
-                visited.insert(neighbour);
-                prev[neighbour] = node;
+            if ((visited.find(neighbour) == visited.end() || neighbour == destination) &&
+                find(selectedAirlines.begin(), selectedAirlines.end(), airline) != selectedAirlines.end()) {
+                vector<string> newPath = path;
+                newPath.push_back(neighbour);
+                queue.push(newPath);
+                if (neighbour != destination) {
+                    visited.insert(neighbour);
+                }
             }
         }
     }
 
-    return vector<string>();
+    return paths;
 }
 
 
