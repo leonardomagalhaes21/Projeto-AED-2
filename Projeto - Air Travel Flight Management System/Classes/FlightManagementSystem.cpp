@@ -172,7 +172,7 @@ int FlightManagementSystem::getNumberOfCountriesFromCity(const string &city, con
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std::string &airportCode) const {
+void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const string &airportCode) const {
     auto vertex = flights.findVertex(airportCode);
     vector<string> destinations;
     flights.dfsVisit(vertex, destinations);
@@ -220,7 +220,7 @@ void FlightManagementSystem::numberOfReachableDestinationsFromAirport(const std:
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-void FlightManagementSystem::numberOfReachableDestinationsFromAirportWithStops(const std::string &airportCode, int maxStops) const {
+void FlightManagementSystem::numberOfReachableDestinationsFromAirportWithStops(const string &airportCode, int maxStops) const {
     vector<string> destinations = flights.nodesAtDistanceBFS(airportCode, maxStops+1);
 
     for (auto v : flights.getVertexSet()) {
@@ -412,7 +412,7 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-void FlightManagementSystem::findBestFlightOptionsByAirportName(const std::string &source, const std::string &destination) const {
+void FlightManagementSystem::findBestFlightOptionsByAirportName(const string &source, const string &destination) const {
     string s, d;
     bool flagSource = false;
     bool flagDestination = false;
@@ -449,6 +449,104 @@ void FlightManagementSystem::findBestFlightOptionsByAirportName(const std::strin
     }
 }
 
+void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCityName(const string &source, const string &destinationCity, const string &destinationCountry) const {
+    vector<string> destinationCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& destination : destinationCodes){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptions(source, destination);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() -1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+void FlightManagementSystem::findBestFlightOptionsByAirportNameToCityName(const string &sourceName, const string &destinationCity, const string &destinationCountry) const {
+    string sourceCode;
+    bool flagSource = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == sourceName){
+            sourceCode = vertex->getInfo();
+            flagSource = true;
+            break;
+        }
+    }
+
+    if (!flagSource) {
+        cout << "Airport " << sourceName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsByAirportCodeToCityName(sourceCode, destinationCity, destinationCountry);
+}
+
+void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCoordinates(const string &source, double latitude, double longitude) const {
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> min;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            min.clear();
+            min.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            min.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& airport : min){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptions(source, airport);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() - 1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+void FlightManagementSystem::findBestFlightOptionsByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude) const {
+    string sourceCode;
+    bool flagSource = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == sourceName){
+            sourceCode = vertex->getInfo();
+            flagSource = true;
+            break;
+        }
+    }
+
+    if (!flagSource) {
+        cout << "Airport " << sourceName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsByAirportCodeToCoordinates(sourceCode, latitude, longitude);
+}
+
 /**
  * @brief Finds the best flight option between two cities.
  *
@@ -461,7 +559,7 @@ void FlightManagementSystem::findBestFlightOptionsByAirportName(const std::strin
  *
  * @complexity Time Complexity: O(V² + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-void FlightManagementSystem::findBestFlightOptionsByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const {
+void FlightManagementSystem::findBestFlightOptionsByCity(const string &sourceCity, const string &sourceCountry, const string &destinationCity, const string &destinationCountry) const {
     vector<string> sourceCodes;
     vector<string> destinationCodes;
     for(auto vertex : flights.getVertexSet()){
@@ -505,7 +603,7 @@ void FlightManagementSystem::findBestFlightOptionsByCity(const std::string &sour
  *
  * @complexity Time Complexity: O(V), where V is the number of vertices in the flights graph.
  */
-void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude, double longitude, const std::string &destination) const {
+void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude, double longitude, const string &destination) const {
     Position position = Position(latitude, longitude);
     int minDistance = INT_MAX;
     for (auto vertex : flights.getVertexSet()) {
@@ -562,8 +660,8 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude,
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-vector<Route> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const std::string &source, const std::string &destination,
-                                                                             const std::vector<std::string> &selectedAirlines) const {
+vector<Route> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination,
+                                                                             const vector<string> &selectedAirlines) const {
     auto path = flights.shortestPathBFS(source, destination,selectedAirlines);
     vector<Route> res;
     for(int i = 0; i < path.size()-1; i++){
