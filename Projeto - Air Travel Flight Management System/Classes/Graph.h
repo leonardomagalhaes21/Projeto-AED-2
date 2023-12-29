@@ -108,7 +108,7 @@ public:
     vector<pair<string,string>> dfs(int& maxStops, vector<pair<string,string>>& res) const;
     void dfsVisit(Vertex *v, vector<pair<string,string>>& res, int& maxStops, int stops, const string &source) const;
     unordered_set<string> articulationPoints() const;
-    vector<string> shortestPathBFS(const string &source, const string &destination) const;
+    vector<vector<string>> shortestPathBFS(const string &source, const string &destination) const;
     vector<string> shortestPathBFS(const string &source, const string &destination,const std::vector<std::string> &selectedAirlines) const;
 
     void bfsVisitForDiameter(Vertex *start, int &diameter, unordered_set<std::string> &visited) const;
