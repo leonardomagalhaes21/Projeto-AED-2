@@ -57,6 +57,11 @@ public:
     void findBestFlightOptionsByAirportName(const std::string &source, const std::string &destination) const;
     void findBestFlightOptionsByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const;
     void findBestFlightOptionsByCoordinates(double latitude, double longitude, const std::string &destination) const;
+    void findBestFlightOptionsByAirportCodeToCityName(const std::string &source, const std::string &destinationCity, const std::string &destinationCountry) const;
+    void findBestFlightOptionsByAirportNameToCityName(const std::string &sourceName, const std::string &destinationCity, const std::string &destinationCountry) const;
+    void findBestFlightOptionsByAirportCodeToCoordinates(const string &source, double latitude, double longitude) const;
+    void findBestFlightOptionsByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude) const;
+
     std::vector<Route> findBestFlightOptionsWithGivenAirlines(const std::string& source, const std::string& destination, const std::vector<std::string> &selectedAirlines) const;
 
 private:
