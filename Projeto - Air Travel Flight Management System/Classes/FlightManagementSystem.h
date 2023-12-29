@@ -15,6 +15,17 @@ struct Route {
     std::string source;
     std::string target;
     std::vector<std::string> airlines;
+
+    bool operator<(const Route& r) const {
+        if (source != r.source)
+            return source < r.source;
+        if (target != r.target)
+            return target < r.target;
+        return airlines < r.airlines;
+    }
+    bool operator==(const Route& r) const {
+        return source == r.source && target == r.target && airlines == r.airlines;
+    }
 };
 
 class FlightManagementSystem {
@@ -40,13 +51,13 @@ public:
     int calcStopsBFS(Vertex *source, vector<std::pair<std::string, std::string>> &aux);
     void getTopAirportWithMostTraffic(int k) const;
     unordered_set<string> getEssentialAirports() const;
+    void printRoute(const Route& route) const;
 
-    
-    std::vector<Route> findBestFlightOption(const std::string& source, const std::string& destination) const;
-    void findBestFlightOptionByAirportName(const std::string &source, const std::string &destination) const;
-    void findBestFlightOptionByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const;
-    void findBestFlightOptionByCoordinates(double latitude, double longitude, const std::string &destination) const;
-    std::vector<Route> findBestFlightOptionWithGivenAirlines(const std::string& source, const std::string& destination,const std::vector<std::string> &selectedAirlines) const;
+    vector<vector<Route>> findBestFlightOptions(const std::string& source, const std::string& destination) const;
+    void findBestFlightOptionsByAirportName(const std::string &source, const std::string &destination) const;
+    void findBestFlightOptionsByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry) const;
+    void findBestFlightOptionsByCoordinates(double latitude, double longitude, const std::string &destination) const;
+    std::vector<Route> findBestFlightOptionsWithGivenAirlines(const std::string& source, const std::string& destination, const std::vector<std::string> &selectedAirlines) const;
 
 private:
     std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines
