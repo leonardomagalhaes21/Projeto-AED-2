@@ -380,7 +380,7 @@ void FlightManagementSystem::printRoute(const Route& route) const {
  */
 vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string &source, const string &destination) const {
     vector<vector<Route>> paths;
-    auto shortestPaths = flights.shortestPathBFS(source, destination);
+    auto shortestPaths = flights.shortestPathsBFS(source, destination);
 
     for (const auto& path : shortestPaths) {
         vector<Route> routePath;
@@ -589,6 +589,68 @@ void FlightManagementSystem::findBestFlightOptionsByCity(const string &sourceCit
     }
 }
 
+void FlightManagementSystem::findBestFlightOptionsByCityToAirportCode(const string &sourceCity, const string &sourceCountry, const string &destinationCode) const {
+    vector<string> sourceCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptions(source, destinationCode);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() -1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+void FlightManagementSystem::findBestFlightOptionsByCityToAirportName(const string &sourceCity, const string &sourceCountry, const string &destinationName) const {
+    vector<string> sourceCodes;
+    string destinationCode;
+    bool flagDestination = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        if(airports.find(vertex->getInfo())->second.getName() == destinationName){
+            destinationCode = vertex->getInfo();
+            flagDestination = true;
+        }
+    }
+
+    if (!flagDestination) {
+        cout << "Airport " << destinationName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsByCityToAirportCode(sourceCity, sourceCountry, destinationCode);
+}
+
+void FlightManagementSystem::findBestFlightOptionsByCityToCoordinates(const string &sourceCity, const string &sourceCountry, double latitude, double longitude) const {
+    vector<string> sourceCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        cout << "Option " << option << ": " << endl;
+        findBestFlightOptionsByAirportCodeToCoordinates(source, latitude, longitude);
+        option++;
+    }
+}
+
 /**
  * @brief Find the best flight options from the nearest airport (in terms of haversine distance) to the given coordinates to the specified destination.
  *
@@ -644,6 +706,125 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude,
         option++;
     }
 
+}
+
+void FlightManagementSystem::findBestFlightOptionsByCoordinatesToAirportName(double latitude, double longitude, const string &destinationName) const {
+    string destinationCode;
+    bool flagDestination = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == destinationName){
+            destinationCode = vertex->getInfo();
+            flagDestination = true;
+            break;
+        }
+    }
+
+    if (!flagDestination) {
+        cout << "Airport " << destinationName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsByCoordinates(latitude, longitude, destinationCode);
+}
+
+void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry) const {
+    vector<string> sourceCodes;
+    vector<string> destinationCodes;
+
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            sourceCodes.clear();
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        for (const auto& destination : destinationCodes){
+            cout << "Option " << option << ": " << endl;
+            auto vec = findBestFlightOptions(source, destination);
+            for(int i = 0; i < vec.size(); i++){
+                for(const auto& flight : vec[i]){
+                    printRoute(flight);
+                }
+                if (i != vec.size() -1) {
+                    cout << endl << '\t' << '\t' << "Or..." << endl;
+                }
+            }
+            cout << endl;
+            option++;
+        }
+    }
+}
+
+void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude) const {
+    Position sourcePosition = Position(sourceLatitude, sourceLongitude);
+    int minSourceDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)sourcePosition.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> minSource;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minSourceDistance){
+            minSourceDistance = vertex->getNum();
+            minSource.clear();
+            minSource.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minSourceDistance){
+            minSource.push_back(vertex->getInfo());
+        }
+    }
+
+    Position destinationPosition = Position(destinationLatitude, destinationLongitude);
+    int minDestinationDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)destinationPosition.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> minDestination;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDestinationDistance){
+            minDestinationDistance = vertex->getNum();
+            minDestination.clear();
+            minDestination.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDestinationDistance){
+            minDestination.push_back(vertex->getInfo());
+        }
+    }
+
+    int option = 1;
+    for (const auto& source : minSource){
+        for (const auto& destination : minDestination){
+            cout << "Option " << option << ": " << endl;
+            auto vec = findBestFlightOptions(source, destination);
+            for(int i = 0; i < vec.size(); i++){
+                for(const auto& flight : vec[i]){
+                    printRoute(flight);
+                }
+                if (i != vec.size() -1) {
+                    cout << endl << '\t' << '\t' << "Or..." << endl;
+                }
+            }
+            cout << endl;
+            option++;
+        }
+    }
 }
 
 /**

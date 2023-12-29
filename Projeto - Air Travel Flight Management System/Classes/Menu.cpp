@@ -388,11 +388,27 @@ void Menu::showMenu() {
                                 cin >> key9;
                                 switch(key9) {
                                     case '1': {
-                                        //TODO
+                                        string source, sourceCountry, target;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Target airport code: ";
+                                        cin >> target;
+                                        fms.findBestFlightOptionsByCityToAirportCode(source, sourceCountry, target);
                                         break;
                                     }
                                     case '2': {
-                                        //TODO
+                                        string source, sourceCountry, target;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Target airport name: ";
+                                        getline(cin, target);
+                                        fms.findBestFlightOptionsByCityToAirportName(source, sourceCountry, target);
                                         break;
                                     }
                                     case 'Q' : {
@@ -419,7 +435,18 @@ void Menu::showMenu() {
                                 break;
                             }
                             case '3': {
-                                //TODO
+                                double lat, lon;
+                                string source, sourceCountry;
+                                cout << "Source city: ";
+                                cin.ignore();
+                                getline(cin, source);
+                                cout << "Source country: ";
+                                getline(cin, sourceCountry);
+                                cout << "Latitude: ";
+                                cin >> lat;
+                                cout << "Longitude: ";
+                                cin >> lon;
+                                fms.findBestFlightOptionsByCityToCoordinates(source, sourceCountry, lat, lon);
                                 break;
                             }
                             case 'Q' : {
@@ -465,7 +492,16 @@ void Menu::showMenu() {
                                         break;
                                     }
                                     case '2': {
-                                        //TODO
+                                        double lat, lon;
+                                        string target;
+                                        cout << "Latitude: ";
+                                        cin >> lat;
+                                        cout << "Longitude: ";
+                                        cin >> lon;
+                                        cout << "Target airport name: ";
+                                        cin.ignore();
+                                        getline(cin, target);
+                                        fms.findBestFlightOptionsByCoordinatesToAirportName(lat, lon, target);
                                         break;
                                     }
                                     case 'Q' : {
@@ -478,11 +514,31 @@ void Menu::showMenu() {
                                 break;
                             }
                             case '2': {
-                                //TODO
+                                double lat, lon;
+                                string target, targetCountry;
+                                cout << "Latitude: ";
+                                cin >> lat;
+                                cout << "Longitude: ";
+                                cin >> lon;
+                                cout << "Target city: ";
+                                cin.ignore();
+                                getline(cin, target);
+                                cout << "Target country: ";
+                                getline(cin, targetCountry);
+                                fms.findBestFlightOptionsByCoordinatesToCity(lat, lon, target, targetCountry);
                                 break;
                             }
                             case '3': {
-                                //TODO
+                                double lat1, lon1, lat2, lon2;
+                                cout << "Source latitude: ";
+                                cin >> lat1;
+                                cout << "Source longitude: ";
+                                cin >> lon1;
+                                cout << "Target latitude: ";
+                                cin >> lat2;
+                                cout << "Target longitude: ";
+                                cin >> lon2;
+                                fms.findBestFlightOptionsByCoordinatesToCoordinates(lat1, lon1, lat2, lon2);
                                 break;
                             }
                             case 'Q' : {
