@@ -841,7 +841,7 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
+/*vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
     auto paths = flights.shortestPathsBFS(source, destination, selectedAirlines);
     vector<vector<Route>> allOptions;
 
@@ -875,8 +875,9 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithGivenAirl
     }
 
     return allOptions;
-}
-const vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
+}*/
+
+vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
     vector<vector<Route>> paths;
     auto shortestPaths = flights.shortestPathsBFS(source, destination,selectedAirlines);
 
@@ -1119,13 +1120,11 @@ void FlightManagementSystem::findBestFlightOptionsByCityToCoordinates(const stri
             sourceCodes.push_back(vertex->getInfo());
         }
     }
-    int option = 1;
     for (const auto& source : sourceCodes){
-        cout << "Option " << option << ": " << endl;
         findBestFlightOptionsByAirportCodeToCoordinates(source, latitude, longitude,selectedAirlines);
-        option++;
     }
 }
+
 void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude, double longitude, const string &destination, const vector<string> &selectedAirlines) const {
     Position position = Position(latitude, longitude);
     int minDistance = INT_MAX;
