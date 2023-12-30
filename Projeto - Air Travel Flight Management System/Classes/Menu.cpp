@@ -566,6 +566,7 @@ void Menu::showMenu() {
                 char key12;
                 drawTop();
                 cout << "| 1.  Best flight option with selected airlines    |" << endl;
+                cout << "| 2.  Best flight option with fewest airlines      |" << endl;
                 cout << "| Q.  Exit                                         |" << endl;
                 drawBottom();
                 cout << "Choose an option: ";
@@ -1153,6 +1154,23 @@ void Menu::showMenu() {
                                 cout << endl << "Invalid option!" << endl;
                             }
                         };
+                        break;
+                    }
+                    case '2' : {
+                        string source, target;
+                        cout << "Source airport code: ";
+                        cin >> source;
+                        cout << "Target airport code: ";
+                        cin >> target;
+                        auto vec = fms.findBestFlightOptionsWithFewestAirlines(source, target);
+                        for(int i = 0; i < vec.size(); i++){
+                            for(const auto& flight : vec[i]){
+                                fms.printRoute(flight);
+                            }
+                            if (i != vec.size() -1) {
+                                cout << endl << '\t' << '\t' << "Or..." << endl;
+                            }
+                        }
                         break;
                     }
                     case 'Q' : {
