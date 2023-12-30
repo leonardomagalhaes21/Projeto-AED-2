@@ -86,6 +86,9 @@ public:
     void findBestFlightOptionsByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude,const std::vector<std::string> &selectedAirlines) const;
     vector<vector<Route>>findBestFlightOptions(const std::string& source, const std::string& destination, const std::vector<std::string> &selectedAirlines) const;
 
+    vector<vector<Route>> findBestFlightOptionsWithFewestAirlines(const string &source, const string &destination) const;
+    static vector<Route> minimizeAirlines(const vector<Route>& routes) ;
+
 private:
     std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines
 

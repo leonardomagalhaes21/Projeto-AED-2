@@ -1285,3 +1285,50 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
         }
     }
 }
+
+vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithFewestAirlines(const string &source, const string &destination) const {
+    vector<vector<Route>> paths;
+
+    paths = findBestFlightOptions(source, destination);
+
+    for (auto &path : paths) {
+        path = minimizeAirlines(path);
+    }
+
+    return paths;
+}
+
+vector<Route> FlightManagementSystem::minimizeAirlines(const vector<Route>& routes) {
+    unordered_map<string, int> airlineCounts;
+    for (const auto& route : routes) {
+        for (const auto& airline : route.airlines) {
+            airlineCounts[airline]++;
+        }
+    }
+
+    int maxCount = 0;
+    for (const auto& pair : airlineCounts) {
+        if (pair.second > maxCount) {
+            maxCount = pair.second;
+        }
+    }
+
+    vector<string> mostFrequentAirlines;
+    for (const auto& pair : airlineCounts) {
+        if (pair.second == maxCount) {
+            mostFrequentAirlines.push_back(pair.first);
+        }
+    }
+
+    if (maxCount == routes.size()) {
+        vector<Route> minimizedRoutes;
+        for (const auto& route : routes) {
+            Route newRoute = route;
+            newRoute.airlines = mostFrequentAirlines;
+            minimizedRoutes.push_back(newRoute);
+        }
+        return minimizedRoutes;
+    } else {
+        return routes;
+    }
+}
