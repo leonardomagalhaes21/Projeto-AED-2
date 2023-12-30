@@ -87,7 +87,22 @@ public:
     vector<vector<Route>>findBestFlightOptions(const std::string& source, const std::string& destination, const std::vector<std::string> &selectedAirlines) const;
 
     vector<vector<Route>> findBestFlightOptionsWithFewestAirlines(const string &source, const string &destination) const;
-    static vector<Route> minimizeAirlines(const vector<Route>& routes) ;
+    static vector<Route> minimizeAirlines(const vector<Route>& routes);
+
+    void findBestFlightOptionsWithFewestAirlinesByAirportNameToAirportName(const string &sourceName, const string &destinationName) const;
+    void findBestFlightOptionsWithFewestAirlinesByAirportCodeToCity(const string &sourceCode, const string &destinationCity, const string &destinationCountry) const;
+    void findBestFlightOptionsWithFewestAirlinesByAirportNameToCity(const string &sourceName, const string &destinationCity, const string &destinationCountry) const;
+    void findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates(const string &source, double latitude, double longitude) const;
+    void findBestFlightOptionsWithFewestAirlinesByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude) const;
+    void findBestFlightOptionsWithFewestAirlinesByCity(const string &sourceCity, const string &sourceCountry, const string &destinationCity, const string &destinationCountry) const;
+    void findBestFlightOptionsWithFewestAirlinesByCityToAirportCode(const string &sourceCity, const string &sourceCountry, const string &destinationCode) const;
+    void findBestFlightOptionsWithFewestAirlinesByCityToAirportName(const string &sourceCity, const string &sourceCountry, const string &destinationName) const;
+    void findBestFlightOptionsWithFewestAirlinesByCityToCoordinates(const string &sourceCity, const string &sourceCountry, double latitude, double longitude) const;
+    void findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportCode(double latitude, double longitude, const string &destination) const;
+    void findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportName(double latitude, double longitude, const string &destinationName) const;
+    void findBestFlightOptionsWithFewestAirlinesByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry) const;
+    void findBestFlightOptionsWithFewestAirlinesByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude) const;
+
 
 private:
     std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines

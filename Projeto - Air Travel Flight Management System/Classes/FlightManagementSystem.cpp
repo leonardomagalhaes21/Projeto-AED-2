@@ -827,6 +827,7 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
     }
 }
 
+
 /**
  * @brief Find the best flight options from the source airport to the destination airport considering a given set of airlines.
  *
@@ -835,48 +836,12 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
  *
  * @param source The code of the source airport.
  * @param destination The code of the destination airport.
- * @param selectedAirlines The vector of selected airline codes to consider in the search.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
  *
- * @return A vector of Route objects representing the best flight options from the source to the destination.
+ * @return A vector of vectors of Route objects representing the best flight options from the source to the destination.
  *
  * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
  */
-/*vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
-    auto paths = flights.shortestPathsBFS(source, destination, selectedAirlines);
-    vector<vector<Route>> allOptions;
-
-    int minStops = INT_MAX;
-    for (const auto& path : paths) {
-        if (path.size() - 1 < minStops) {
-            minStops = path.size() - 1;
-        }
-    }
-
-    for (const auto& path : paths) {
-        if (path.size() - 1 == minStops) {
-            vector<Route> routePath;
-            for (int i = 0; i < path.size() - 1; i++) {
-                Vertex* s = flights.findVertex(path[i]);
-                vector<string> flightAirlines;
-                for (auto edge : s->getAdj()) {
-                    if (edge.getDest()->getInfo() == path[i + 1] && find(selectedAirlines.begin(), selectedAirlines.end(), edge.getAirline()) != selectedAirlines.end()) {
-                        flightAirlines.push_back(edge.getAirline());
-                    }
-                }
-                if (!flightAirlines.empty()) {
-                    Route route = {path[i], path[i + 1], flightAirlines};
-                    routePath.push_back(route);
-                }
-            }
-            if (!routePath.empty()) {
-                allOptions.push_back(routePath);
-            }
-        }
-    }
-
-    return allOptions;
-}*/
-
 vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
     vector<vector<Route>> paths;
     auto shortestPaths = flights.shortestPathsBFS(source, destination,selectedAirlines);
@@ -901,7 +866,19 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string
 
     return paths;
 }
-
+/**
+ * @brief Find the best flight options from the source airport to airports in a specific city and country, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source airport to airports in a specific city and country, considering only the
+ * selected set of airlines. It uses the airport code of the source and calls the findBestFlightOptions function for each destination airport.
+ *
+ * @param source The code of the source airport.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByAirportName(const string &source, const string &destination, const vector<string> &selectedAirlines) const {
     string s, d;
     bool flagSource = false;
@@ -938,7 +915,19 @@ void FlightManagementSystem::findBestFlightOptionsByAirportName(const string &so
         }
     }
 }
-
+/**
+ * @brief Find the best flight options from the source airport to airports in a specific city and country, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source airport to airports in a specific city and country, considering only the
+ * selected set of airlines. It uses the airport code of the source and calls the findBestFlightOptions function for each destination airport.
+ *
+ * @param source The code of the source airport.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCityName(const string &source, const string &destinationCity, const string &destinationCountry, const vector<string> &selectedAirlines) const {
     vector<string> destinationCodes;
     for(auto vertex : flights.getVertexSet()){
@@ -963,6 +952,19 @@ void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCityName(const 
     }
 }
 
+/**
+ * @brief Find the best flight options from the source airport to airports in a specific city and country by airport name, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source airport to airports in a specific city and country, considering only the
+ * selected set of airlines. It uses the airport name of the source and calls the findBestFlightOptionsByAirportCodeToCityName function.
+ *
+ * @param sourceName The name of the source airport.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByAirportNameToCityName(const string &sourceName, const string &destinationCity, const string &destinationCountry,const vector<string> &selectedAirlines) const {
     string sourceCode;
     bool flagSource = false;
@@ -983,6 +985,19 @@ void FlightManagementSystem::findBestFlightOptionsByAirportNameToCityName(const 
     findBestFlightOptionsByAirportCodeToCityName(sourceCode, destinationCity, destinationCountry,selectedAirlines);
 }
 
+/**
+ * @brief Find the best flight options from the source airport to airports with minimum distance, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source airport to airports with minimum distance, considering only the
+ * selected set of airlines. It uses the airport code of the source and calls the findBestFlightOptions function for each destination airport.
+ *
+ * @param source The code of the source airport.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCoordinates(const string &source, double latitude, double longitude,const vector<string> &selectedAirlines) const {
     Position position = Position(latitude, longitude);
     int minDistance = INT_MAX;
@@ -1017,6 +1032,19 @@ void FlightManagementSystem::findBestFlightOptionsByAirportCodeToCoordinates(con
     }
 }
 
+/**
+ * @brief Find the best flight options from the source airport to airports with minimum distance by airport name, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source airport to airports with minimum distance, considering only the
+ * selected set of airlines. It uses the airport name of the source and calls the findBestFlightOptionsByAirportCodeToCoordinates function.
+ *
+ * @param sourceName The name of the source airport.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude,const vector<string> &selectedAirlines) const {
     string sourceCode;
     bool flagSource = false;
@@ -1036,6 +1064,21 @@ void FlightManagementSystem::findBestFlightOptionsByAirportNameToCoordinates(con
 
     findBestFlightOptionsByAirportCodeToCoordinates(sourceCode, latitude, longitude,selectedAirlines);
 }
+
+/**
+ * @brief Find the best flight options from airports in a specific city and country to airports in another city and country, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports in a specific city and country to airports in another city and country, considering only the
+ * selected set of airlines. It uses the airport codes for source and destination and calls the findBestFlightOptions function for each combination.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCity(const string &sourceCity, const string &sourceCountry, const string &destinationCity, const string &destinationCountry,const vector<string> &selectedAirlines) const {
     vector<string> sourceCodes;
     vector<string> destinationCodes;
@@ -1066,6 +1109,20 @@ void FlightManagementSystem::findBestFlightOptionsByCity(const string &sourceCit
     }
 }
 
+
+/**
+ * @brief Find the best flight options from airports in a specific city and country to a specific airport, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports in a specific city and country to a specific airport, considering only the
+ * selected set of airlines. It uses the airport codes for source and destination and calls the findBestFlightOptions function for each source airport.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationCode The code of the destination airport.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCityToAirportCode(const string &sourceCity, const string &sourceCountry, const string &destinationCode,const vector<string> &selectedAirlines) const {
     vector<string> sourceCodes;
     for(auto vertex : flights.getVertexSet()){
@@ -1090,6 +1147,22 @@ void FlightManagementSystem::findBestFlightOptionsByCityToAirportCode(const stri
     }
 }
 
+/**
+ * @brief Find the best flight options from airports in a specific city and country to a specific airport by airport name, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports in a
+ * specific city and country to a specific airport by airport name,
+ * considering only the selected set of airlines. It uses the airport
+ * codes for source and destination and calls the findBestFlightOptions
+ * function for each source airport.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationCode The code of the destination airport.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCityToAirportName(const string &sourceCity, const string &sourceCountry, const string &destinationName,const vector<string> &selectedAirlines) const {
     vector<string> sourceCodes;
     string destinationCode;
@@ -1113,6 +1186,20 @@ void FlightManagementSystem::findBestFlightOptionsByCityToAirportName(const stri
     findBestFlightOptionsByCityToAirportCode(sourceCity, sourceCountry, destinationCode,selectedAirlines);
 }
 
+/**
+ * @brief Find the best flight options from airports in a specific city and country to airports with minimum distance, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports in a specific city and country to airports with minimum distance, considering only the
+ * selected set of airlines. It uses the airport codes for source and calls the findBestFlightOptionsByAirportCodeToCoordinates function for each source airport.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCityToCoordinates(const string &sourceCity, const string &sourceCountry, double latitude, double longitude,const vector<string> &selectedAirlines) const {
     vector<string> sourceCodes;
     for(auto vertex : flights.getVertexSet()){
@@ -1125,6 +1212,19 @@ void FlightManagementSystem::findBestFlightOptionsByCityToCoordinates(const stri
     }
 }
 
+/**
+ * @brief Find the best flight options from airports with minimum distance to a specific airport, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports with minimum distance to a specific airport, considering only the
+ * selected set of airlines. It uses the destination airport code and calls the findBestFlightOptions function for each source airport.
+ *
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ * @param destination The code of the destination airport.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude, double longitude, const string &destination, const vector<string> &selectedAirlines) const {
     Position position = Position(latitude, longitude);
     int minDistance = INT_MAX;
@@ -1168,6 +1268,19 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinates(double latitude,
 
 }
 
+/**
+ * @brief Find the best flight options from airports with minimum distance to a specific airport by airport name, considering a given set of airlines.
+ *
+ * This function finds the best flight options from airports with minimum distance to a specific airport by airport name, considering only the
+ * selected set of airlines. It uses the destination airport name and calls the findBestFlightOptionsByCoordinates function.
+ *
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ * @param destinationName The name of the destination airport.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCoordinatesToAirportName(double latitude, double longitude, const string &destinationName, const vector<string> &selectedAirlines) const {
     string destinationCode;
     bool flagDestination = false;
@@ -1188,6 +1301,22 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToAirportName(dou
     findBestFlightOptionsByCoordinates(latitude, longitude, destinationCode,selectedAirlines);
 }
 
+/**
+ * @brief Find the best flight options from the nearest airport (in terms of haversine distance) to the given coordinates to the specified destination.
+ *
+ * This function calculates the haversine distance from the given coordinates to each airport's coordinates in the system,
+ * selects the nearest airport, and then finds the best flight options from that airport to the specified destination.
+ *
+ * @param latitude The latitude of the target coordinates.
+ * @param longitude The longitude of the target coordinates.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ * @param selectedAirlines The vector of selected airline codes to consider in the search.
+ *
+ * @note If the destination city and country are not valid, a message is printed, and the function returns without further processing.
+ *
+ * @complexity Time Complexity: O(V), where V is the number of vertices in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry, const vector<string> &selectedAirlines) const {
     vector<string> sourceCodes;
     vector<string> destinationCodes;
@@ -1233,6 +1362,20 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCity(double lat
     }
 }
 
+/**
+ * @brief Find the best flight options from the source coordinates to the destination coordinates, considering a given set of airlines.
+ *
+ * This function finds the best flight options from the source coordinates to the destination coordinates, considering only the
+ * selected set of airlines. It calculates the minimum distance source and destination airports and calls the findBestFlightOptions function for each pair.
+ *
+ * @param sourceLatitude The latitude of the source coordinates.
+ * @param sourceLongitude The longitude of the source coordinates.
+ * @param destinationLatitude The latitude of the destination coordinates.
+ * @param destinationLongitude The longitude of the destination coordinates.
+ * @param selectedAirlines A vector of strings representing the selected airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude, const vector<string> &selectedAirlines) const {
     Position sourcePosition = Position(sourceLatitude, sourceLongitude);
     int minSourceDistance = INT_MAX;
@@ -1286,6 +1429,19 @@ void FlightManagementSystem::findBestFlightOptionsByCoordinatesToCoordinates(dou
     }
 }
 
+/**
+ * @brief Find the best flight options from the source airport to the destination airport considering a given set of airlines and minimizing the number of airlines.
+ *
+ * This function finds the best flight options from the source airport to the destination airport, considering only the
+ * selected set of airlines and minimizing the number of airlines used. It uses breadth-first search to find the shortest path based on the specified airlines.
+ *
+ * @param source The code of the source airport.
+ * @param destination The code of the destination airport.
+ *
+ * @return A vector of vectors of Route objects representing the best flight options from the source to the destination with minimized airlines.
+ *
+ * @complexity Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the flights graph.
+ */
 vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithFewestAirlines(const string &source, const string &destination) const {
     vector<vector<Route>> paths;
 
@@ -1298,6 +1454,18 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithFewestAir
     return paths;
 }
 
+/**
+ * @brief Minimize the number of airlines used in a given vector of Route objects.
+ *
+ * This function minimizes the number of airlines used in a given vector of Route objects by selecting the most frequently used airlines
+ * and applying them to all routes. If all routes have the same set of airlines, it applies the most frequent set to each route.
+ *
+ * @param routes The vector of Route objects to minimize.
+ *
+ * @return A vector of Route objects with minimized airlines.
+ *
+ * @complexity Time Complexity: O(R * A), where R is the number of routes and A is the number of airlines.
+ */
 vector<Route> FlightManagementSystem::minimizeAirlines(const vector<Route>& routes) {
     unordered_map<string, int> airlineCounts;
     for (const auto& route : routes) {
@@ -1332,3 +1500,548 @@ vector<Route> FlightManagementSystem::minimizeAirlines(const vector<Route>& rout
         return routes;
     }
 }
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source airport name to the destination airport name.
+ *
+ * This function finds the best flight options with the fewest airlines from the source airport name to the destination airport name.
+ *
+ * @param sourceName The name of the source airport.
+ * @param destinationName The name of the destination airport.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByAirportNameToAirportName(const string &sourceName, const string &destinationName) const {
+    string sourceCode, destinationCode;
+    bool flagSource = false, flagDestination = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == sourceName){
+            sourceCode = vertex->getInfo();
+            flagSource = true;
+        }
+        if(airports.find(vertex->getInfo())->second.getName() == destinationName){
+            destinationCode = vertex->getInfo();
+            flagDestination = true;
+        }
+    }
+
+    if (!flagSource) {
+        cout << "Airport " << sourceName << " doesn't exist" << endl;
+        return;
+    }
+
+    if (!flagDestination) {
+        cout << "Airport " << destinationName << " doesn't exist" << endl;
+        return;
+    }
+
+    auto vec = findBestFlightOptionsWithFewestAirlines(sourceCode, destinationCode);
+    for(int i = 0; i < vec.size(); i++){
+        for(const auto& flight : vec[i]){
+            printRoute(flight);
+        }
+        if (i != vec.size() -1) {
+            cout << endl << '\t' << '\t' << "Or..." << endl;
+        }
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source airport code to the destination city and country.
+ *
+ * This function finds the best flight options with the fewest airlines from the source airport code to the destination city and country.
+ *
+ * @param sourceCode The code of the source airport.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByAirportCodeToCity(const string &sourceCode, const string &destinationCity, const string &destinationCountry) const {
+    vector<string> destinationCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& destination : destinationCodes){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptionsWithFewestAirlines(sourceCode, destination);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() -1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source airport name to the destination city and country.
+ *
+ * This function finds the best flight options with the fewest airlines from the source airport name to the destination city and country.
+ *
+ * @param sourceName The name of the source airport.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByAirportNameToCity(const string &sourceName, const string &destinationCity, const string &destinationCountry) const {
+    string sourceCode;
+    bool flagSource = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == sourceName){
+            sourceCode = vertex->getInfo();
+            flagSource = true;
+            break;
+        }
+    }
+
+    if (!flagSource) {
+        cout << "Airport " << sourceName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsWithFewestAirlinesByAirportCodeToCity(sourceCode, destinationCity, destinationCountry);
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source airport code to the destination coordinates.
+ *
+ * This function finds the best flight options with the fewest airlines from the source airport code to the destination coordinates.
+ *
+ * @param source The code of the source airport.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates(const string &source, double latitude, double longitude) const {
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> min;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            min.clear();
+            min.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            min.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& airport : min){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptionsWithFewestAirlines(source, airport);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() - 1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source airport name to the destination coordinates.
+ *
+ * This function finds the best flight options with the fewest airlines from the source airport name to the destination coordinates.
+ *
+ * @param sourceName The name of the source airport.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude) const {
+    string sourceCode;
+    bool flagSource = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == sourceName){
+            sourceCode = vertex->getInfo();
+            flagSource = true;
+            break;
+        }
+    }
+
+    if (!flagSource) {
+        cout << "Airport " << sourceName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates(sourceCode, latitude, longitude);
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source city and country to the destination city and country.
+ *
+ * This function finds the best flight options with the fewest airlines from the source city and country to the destination city and country.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCity(const string &sourceCity, const string &sourceCountry, const string &destinationCity, const string &destinationCountry) const {
+    vector<string> sourceCodes;
+    vector<string> destinationCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        for (const auto& destination : destinationCodes){
+            cout << "Option " << option << ": " << endl;
+            auto vec = findBestFlightOptionsWithFewestAirlines(source, destination);
+            for(int i = 0; i < vec.size(); i++){
+                for(const auto& flight : vec[i]){
+                    printRoute(flight);
+                }
+                if (i != vec.size() -1) {
+                    cout << endl << '\t' << '\t' << "Or..." << endl;
+                }
+            }
+            cout << endl;
+            option++;
+        }
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source city and country to the destination airport code.
+ *
+ * This function finds the best flight options with the fewest airlines from the source city and country to the destination airport code.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationCode The code of the destination airport.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCityToAirportCode(const string &sourceCity, const string &sourceCountry, const string &destinationCode) const {
+    vector<string> sourceCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptionsWithFewestAirlines(source, destinationCode);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() -1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source city and country to the destination airport name.
+ *
+ * This function finds the best flight options with the fewest airlines from the source city and country to the destination airport name.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param destinationName The name of the destination airport.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCityToAirportName(const string &sourceCity, const string &sourceCountry, const string &destinationName) const {
+    vector<string> sourceCodes;
+    string destinationCode;
+    bool flagDestination = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        if(airports.find(vertex->getInfo())->second.getName() == destinationName){
+            destinationCode = vertex->getInfo();
+            flagDestination = true;
+        }
+    }
+
+    if (!flagDestination) {
+        cout << "Airport " << destinationName << " doesn't exist" << endl;
+        return;
+    }
+
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptionsWithFewestAirlines(source, destinationCode);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() -1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source city and country to the destination coordinates.
+ *
+ * This function finds the best flight options with the fewest airlines from the source city and country to the destination coordinates.
+ *
+ * @param sourceCity The name of the source city.
+ * @param sourceCountry The name of the source country.
+ * @param latitude The latitude of the destination coordinates.
+ * @param longitude The longitude of the destination coordinates.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCityToCoordinates(const string &sourceCity, const string &sourceCountry, double latitude, double longitude) const {
+    vector<string> sourceCodes;
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == sourceCity && airports.find(vertex->getInfo())->second.getCountry() == sourceCountry){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+    for (const auto& source : sourceCodes){
+        findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates(source, latitude, longitude);
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source coordinates to the destination airport code.
+ *
+ * This function finds the best flight options with the fewest airlines from the source coordinates to the destination airport code.
+ *
+ * @param latitude The latitude of the source coordinates.
+ * @param longitude The longitude of the source coordinates.
+ * @param destinationCode The code of the destination airport.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportCode(double latitude, double longitude, const string &destination) const {
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> min;
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            min.clear();
+            min.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            min.push_back(vertex->getInfo());
+        }
+    }
+    bool flag=false;
+    if(airports.find(destination) == airports.end()){
+        flag = true;
+    }
+    if (flag){
+        cout << "No Code available" << endl;
+        return;
+    }
+    int option = 1;
+    for (const auto& airport : min){
+        cout << "Option " << option << ": " << endl;
+        auto vec = findBestFlightOptionsWithFewestAirlines(airport, destination);
+        for(int i = 0; i < vec.size(); i++){
+            for(const auto& flight : vec[i]){
+                printRoute(flight);
+            }
+            if (i != vec.size() - 1) {
+                cout << endl << '\t' << '\t' << "Or..." << endl;
+            }
+        }
+        cout << endl;
+        option++;
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source coordinates to the destination airport name.
+ *
+ * This function finds the best flight options with the fewest airlines from the source coordinates to the destination airport name.
+ *
+ * @param latitude The latitude of the source coordinates.
+ * @param longitude The longitude of the source coordinates.
+ * @param destinationName The name of the destination airport.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportCode function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportName(double latitude, double longitude, const string &destinationName) const {
+    string destinationCode;
+    bool flagDestination = false;
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getName() == destinationName){
+            destinationCode = vertex->getInfo();
+            flagDestination = true;
+            break;
+        }
+    }
+
+    if (!flagDestination) {
+        cout << "Airport " << destinationName << " doesn't exist" << endl;
+        return;
+    }
+
+    findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportCode(latitude, longitude, destinationCode);
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source coordinates to the destination city and country.
+ *
+ * This function finds the best flight options with the fewest airlines from the source coordinates to the destination city and country.
+ *
+ * @param latitude The latitude of the source coordinates.
+ * @param longitude The longitude of the source coordinates.
+ * @param destinationCity The name of the destination city.
+ * @param destinationCountry The name of the destination country.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry) const {
+    vector<string> sourceCodes;
+    vector<string> destinationCodes;
+
+    Position position = Position(latitude, longitude);
+    int minDistance = INT_MAX;
+    for (auto vertex : flights.getVertexSet()) {
+        vertex->setNum((int)position.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    for (auto vertex : flights.getVertexSet()){
+        if(vertex->getNum() < minDistance){
+            minDistance = vertex->getNum();
+            sourceCodes.clear();
+            sourceCodes.push_back(vertex->getInfo());
+        }
+        else if(vertex->getNum() == minDistance){
+            sourceCodes.push_back(vertex->getInfo());
+        }
+    }
+
+    for(auto vertex : flights.getVertexSet()){
+        if(airports.find(vertex->getInfo())->second.getCity() == destinationCity && airports.find(vertex->getInfo())->second.getCountry() == destinationCountry){
+            destinationCodes.push_back(vertex->getInfo());
+        }
+    }
+
+    int option = 1;
+    for (const auto& source : sourceCodes){
+        for (const auto& destination : destinationCodes){
+            cout << "Option " << option << ": " << endl;
+            auto vec = findBestFlightOptionsWithFewestAirlines(source, destination);
+            for(int i = 0; i < vec.size(); i++){
+                for(const auto& flight : vec[i]){
+                    printRoute(flight);
+                }
+                if (i != vec.size() -1) {
+                    cout << endl << '\t' << '\t' << "Or..." << endl;
+                }
+            }
+            cout << endl;
+            option++;
+        }
+    }
+}
+
+/**
+ * @brief Find the best flight options with the fewest airlines from the source coordinates to the destination coordinates.
+ *
+ * This function finds the best flight options with the fewest airlines from the source coordinates to the destination coordinates.
+ *
+ * @param sourceLatitude The latitude of the source coordinates.
+ * @param sourceLongitude The longitude of the source coordinates.
+ * @param destinationLatitude The latitude of the destination coordinates.
+ * @param destinationLongitude The longitude of the destination coordinates.
+ *
+ * @complexity Time Complexity: Depends on findBestFlightOptionsWithFewestAirlines function, which is O(V + E).
+ */
+void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude) const {
+    Position sourcePosition = Position(sourceLatitude, sourceLongitude);
+    int minSourceDistance = INT_MAX;
+    for (auto vertex: flights.getVertexSet()) {
+        vertex->setNum((int) sourcePosition.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> minSource;
+    for (auto vertex: flights.getVertexSet()) {
+        if (vertex->getNum() < minSourceDistance) {
+            minSourceDistance = vertex->getNum();
+            minSource.clear();
+            minSource.push_back(vertex->getInfo());
+        } else if (vertex->getNum() == minSourceDistance) {
+            minSource.push_back(vertex->getInfo());
+        }
+    }
+
+    Position destinationPosition = Position(destinationLatitude, destinationLongitude);
+    int minDestinationDistance = INT_MAX;
+    for (auto vertex: flights.getVertexSet()) {
+        vertex->setNum(
+                (int) destinationPosition.haversineDistance(airports.find(vertex->getInfo())->second.getPosition()));
+    }
+    vector<string> minDestination;
+    for (auto vertex: flights.getVertexSet()) {
+        if (vertex->getNum() < minDestinationDistance) {
+            minDestinationDistance = vertex->getNum();
+            minDestination.clear();
+            minDestination.push_back(vertex->getInfo());
+        } else if (vertex->getNum() == minDestinationDistance) {
+            minDestination.push_back(vertex->getInfo());
+        }
+    }
+
+    int option = 1;
+    for (const auto &source: minSource) {
+        for (const auto &destination: minDestination) {
+            cout << "Option " << option << ": " << endl;
+            auto vec = findBestFlightOptionsWithFewestAirlines(source, destination);
+            for (int i = 0; i < vec.size(); i++) {
+                for (const auto &flight: vec[i]) {
+                    printRoute(flight);
+                }
+                if (i != vec.size() - 1) {
+                    cout << endl << '\t' << '\t' << "Or..." << endl;
+                }
+            }
+            cout << endl;
+            option++;
+        }
+    }
+}
+

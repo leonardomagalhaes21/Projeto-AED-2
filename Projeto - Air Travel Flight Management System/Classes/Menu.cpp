@@ -63,6 +63,7 @@ void Menu::showMenu() {
         cout << "| 2. Statistics                                    |" << endl;
         cout << "| 3. Best flight option                            |" << endl;
         cout << "| 4. Personalized preferences                      |" << endl;
+        cout << "| 5. Smallest Distance                             |" << endl;
         cout << "| Q. Exit                                          |" << endl;
         drawBottom();
         cout << "Choose an option: ";
@@ -571,7 +572,7 @@ void Menu::showMenu() {
                 drawBottom();
                 cout << "Choose an option: ";
                 cin >> key12;
-                switch(key12){
+                switch (key12) {
                     case '1': {
                         char key14;
                         drawTop();
@@ -582,7 +583,7 @@ void Menu::showMenu() {
                         drawBottom();
                         cout << "Choose an option: ";
                         cin >> key14;
-                        switch(key14){
+                        switch (key14) {
                             case '1' : {
                                 char key15;
                                 drawTop();
@@ -593,7 +594,7 @@ void Menu::showMenu() {
                                 drawBottom();
                                 cout << "Choose an option: ";
                                 cin >> key15;
-                                switch(key15){
+                                switch (key15) {
                                     case '1' : {
                                         char key16;
                                         drawTop();
@@ -603,7 +604,7 @@ void Menu::showMenu() {
                                         drawBottom();
                                         cout << "Choose an option: ";
                                         cin >> key16;
-                                        switch(key16){
+                                        switch (key16) {
                                             case '1' : {
                                                 string source, target;
                                                 cout << "Source airport code: ";
@@ -628,11 +629,11 @@ void Menu::showMenu() {
 
 
                                                 auto vec = fms.findBestFlightOptions(source, target, airlines);
-                                                for(int i = 0; i < vec.size(); i++){
-                                                    for(const auto& flight : vec[i]){
+                                                for (int i = 0; i < vec.size(); i++) {
+                                                    for (const auto &flight: vec[i]) {
                                                         fms.printRoute(flight);
                                                     }
-                                                    if (i != vec.size() -1) {
+                                                    if (i != vec.size() - 1) {
                                                         cout << endl << '\t' << '\t' << "Or..." << endl;
                                                     }
                                                 }
@@ -682,7 +683,7 @@ void Menu::showMenu() {
                                         drawBottom();
                                         cout << "Choose an option: ";
                                         cin >> key18;
-                                        switch(key18){
+                                        switch (key18) {
                                             case '1' : {
                                                 string source, targetCountry, target;
                                                 cout << "Source airport code: ";
@@ -709,15 +710,17 @@ void Menu::showMenu() {
                                                 cin.ignore();
                                                 cout << endl;
 
-                                                fms.findBestFlightOptionsByAirportCodeToCityName(source, target, targetCountry, airlines);
+                                                fms.findBestFlightOptionsByAirportCodeToCityName(source, target,
+                                                                                                 targetCountry,
+                                                                                                 airlines);
                                                 break;
                                             }
                                             case '2' : {
                                                 string source, targetCountry, target;
                                                 cout << "Source airport name: ";
-                                                cin >> source;
-                                                cout << "Target city name: ";
                                                 cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Target city name: ";
                                                 getline(cin, target);
                                                 cout << "Target country name: ";
                                                 getline(cin, targetCountry);
@@ -738,7 +741,9 @@ void Menu::showMenu() {
                                                 cin.ignore();
                                                 cout << endl;
 
-                                                fms.findBestFlightOptionsByAirportNameToCityName(source, target, targetCountry, airlines);
+                                                fms.findBestFlightOptionsByAirportNameToCityName(source, target,
+                                                                                                 targetCountry,
+                                                                                                 airlines);
                                                 break;
                                             }
                                             case 'Q' : {
@@ -845,7 +850,7 @@ void Menu::showMenu() {
                                 drawBottom();
                                 cout << "Choose an option: ";
                                 cin >> key24;
-                                switch(key24) {
+                                switch (key24) {
                                     case '1' : {
                                         char key25;
                                         drawTop();
@@ -881,7 +886,8 @@ void Menu::showMenu() {
                                                 cin.ignore();
                                                 cout << endl;
 
-                                                fms.findBestFlightOptionsByCityToAirportCode(source, sourceCountry,target, airlines);
+                                                fms.findBestFlightOptionsByCityToAirportCode(source, sourceCountry,
+                                                                                             target, airlines);
                                                 break;
                                             }
                                             case '2' : {
@@ -909,7 +915,8 @@ void Menu::showMenu() {
                                                 cin.ignore();
                                                 cout << endl;
 
-                                                fms.findBestFlightOptionsByCityToAirportName(source, sourceCountry,target, airlines);
+                                                fms.findBestFlightOptionsByCityToAirportName(source, sourceCountry,
+                                                                                             target, airlines);
                                                 break;
                                             }
                                             case 'Q' : {
@@ -948,7 +955,8 @@ void Menu::showMenu() {
                                         cin.ignore();
                                         cout << endl;
 
-                                        fms.findBestFlightOptionsByCity(source, sourceCountry, target, targetCountry, airlines);
+                                        fms.findBestFlightOptionsByCity(source, sourceCountry, target, targetCountry,
+                                                                        airlines);
                                         break;
                                     }
                                     case '3' : {
@@ -979,7 +987,8 @@ void Menu::showMenu() {
                                         cin.ignore();
                                         cout << endl;
 
-                                        fms.findBestFlightOptionsByCityToCoordinates(source, sourceCountry, lat, lon, airlines);
+                                        fms.findBestFlightOptionsByCityToCoordinates(source, sourceCountry, lat, lon,
+                                                                                     airlines);
                                         break;
                                     }
                                     case 'Q' : {
@@ -1001,7 +1010,7 @@ void Menu::showMenu() {
                                 drawBottom();
                                 cout << "Choose an option: ";
                                 cin >> key30;
-                                switch(key30) {
+                                switch (key30) {
                                     case '1' : {
                                         char key31;
                                         drawTop();
@@ -1066,7 +1075,8 @@ void Menu::showMenu() {
                                                 cin.ignore();
                                                 cout << endl;
 
-                                                fms.findBestFlightOptionsByCoordinatesToAirportName(lat, lon, target,airlines);
+                                                fms.findBestFlightOptionsByCoordinatesToAirportName(lat, lon, target,
+                                                                                                    airlines);
                                                 break;
                                             }
                                             case 'Q' : {
@@ -1106,7 +1116,8 @@ void Menu::showMenu() {
                                         cin.ignore();
                                         cout << endl;
 
-                                        fms.findBestFlightOptionsByCoordinatesToCity(lat, lon, target, targetCountry, airlines);
+                                        fms.findBestFlightOptionsByCoordinatesToCity(lat, lon, target, targetCountry,
+                                                                                     airlines);
                                         break;
                                     }
                                     case '3' : {
@@ -1135,7 +1146,8 @@ void Menu::showMenu() {
                                         cin.ignore();
                                         cout << endl;
 
-                                        fms.findBestFlightOptionsByCoordinatesToCoordinates(lat1, lon1, lat2, lon2, airlines);
+                                        fms.findBestFlightOptionsByCoordinatesToCoordinates(lat1, lon1, lat2, lon2,
+                                                                                            airlines);
                                         break;
                                     }
                                     case 'Q' : {
@@ -1157,20 +1169,394 @@ void Menu::showMenu() {
                         break;
                     }
                     case '2' : {
-                        string source, target;
-                        cout << "Source airport code: ";
-                        cin >> source;
-                        cout << "Target airport code: ";
-                        cin >> target;
-                        auto vec = fms.findBestFlightOptionsWithFewestAirlines(source, target);
-                        for(int i = 0; i < vec.size(); i++){
-                            for(const auto& flight : vec[i]){
-                                fms.printRoute(flight);
+                        char key54;
+                        drawTop();
+                        cout << "| 1.  From airport                                 |" << endl;
+                        cout << "| 2.  From city                                    |" << endl;
+                        cout << "| 3.  From coordinates                             |" << endl;
+                        cout << "| Q.  Exit                                         |" << endl;
+                        drawBottom();
+                        cout << "Choose an option: ";
+                        cin >> key54;
+                        switch (key54) {
+                            case '1' : {
+                                char key55;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key55;
+                                switch (key55) {
+                                    case '1' : {
+                                        char key56;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key56;
+                                        switch (key56) {
+                                            case '1' : {
+                                                string source, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                cout << "Target airport code: ";
+                                                cin >> target;
+
+                                                auto vec = fms.findBestFlightOptionsWithFewestAirlines(source, target);
+                                                for (int i = 0; i < vec.size(); i++) {
+                                                    for (const auto &flight: vec[i]) {
+                                                        fms.printRoute(flight);
+                                                    }
+                                                    if (i != vec.size() - 1) {
+                                                        cout << endl << '\t' << '\t' << "Or..." << endl;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, target;
+                                                cout << "Source airport name: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Target airport name: ";
+                                                getline(cin, target);
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByAirportNameToAirportName(
+                                                        source, target);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        char key68;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key68;
+                                        switch (key68) {
+                                            case '1' : {
+                                                string source, targetCountry, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                cout << "Target city name: ";
+                                                cin.ignore();
+                                                getline(cin, target);
+                                                cout << "Target country name: ";
+                                                getline(cin, targetCountry);
+
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByAirportCodeToCity(source,
+                                                                                                               target,
+                                                                                                               targetCountry);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, targetCountry, target;
+                                                cout << "Source airport name: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cin >> source;
+                                                cout << "Target city name: ";
+                                                getline(cin, target);
+                                                cout << "Target country name: ";
+                                                getline(cin, targetCountry);
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByAirportNameToCity(source,
+                                                                                                               target,
+                                                                                                               targetCountry);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '3' : {
+                                        char key71;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key71;
+                                        switch (key71) {
+                                            case '1' : {
+                                                string source, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                double lat, lon;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByAirportCodeToCoordinates(
+                                                        source, lat, lon);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, target;
+                                                cout << "Source airport name: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                double lat, lon;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByAirportNameToCoordinates(
+                                                        source, lat, lon);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                }
+                                break;
                             }
-                            if (i != vec.size() -1) {
-                                cout << endl << '\t' << '\t' << "Or..." << endl;
+                            case '2' : {
+                                char key74;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key74;
+                                switch (key74) {
+                                    case '1' : {
+                                        char key75;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key75;
+                                        switch (key75) {
+                                            case '1' : {
+                                                string source, sourceCountry, target;
+                                                cout << "Source city: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Source country: ";
+                                                getline(cin, sourceCountry);
+                                                cout << "Target airport code: ";
+                                                cin >> target;
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByCityToAirportCode(source,
+                                                                                                               sourceCountry,
+                                                                                                               target);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, sourceCountry, target;
+                                                cout << "Source city: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Source country: ";
+                                                getline(cin, sourceCountry);
+                                                cout << "Target airport name: ";
+                                                getline(cin, target);
+
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByCityToAirportName(source,
+                                                                                                               sourceCountry,
+                                                                                                               target);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        string source, sourceCountry, target, targetCountry;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Target city: ";
+                                        getline(cin, target);
+                                        cout << "Target country: ";
+                                        getline(cin, targetCountry);
+
+                                        fms.findBestFlightOptionsWithFewestAirlinesByCity(source, sourceCountry, target,
+                                                                                          targetCountry);
+                                        break;
+                                    }
+                                    case '3' : {
+                                        double lat, lon;
+                                        string source, sourceCountry;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Latitude: ";
+                                        cin >> lat;
+                                        cout << "Longitude: ";
+                                        cin >> lon;
+                                        fms.findBestFlightOptionsWithFewestAirlinesByCityToCoordinates(source,
+                                                                                                       sourceCountry,
+                                                                                                       lat, lon);
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                };
+                                break;
                             }
-                        }
+                            case '3' : {
+                                char key80;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key80;
+                                switch (key80) {
+                                    case '1' : {
+                                        char key81;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key81;
+                                        switch (key81) {
+                                            case '1' : {
+                                                double lat, lon;
+                                                string target;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                cout << "Target airport code: ";
+                                                cin >> target;
+                                                fms.findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportCode(
+                                                        lat, lon, target);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                double lat, lon;
+                                                string target;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                cout << "Target airport name: ";
+                                                cin.ignore();
+                                                getline(cin, target);
+
+                                                fms.findBestFlightOptionsWithFewestAirlinesByCoordinatesToAirportName(
+                                                        lat, lon, target);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        double lat, lon;
+                                        string target, targetCountry;
+                                        cout << "Latitude: ";
+                                        cin >> lat;
+                                        cout << "Longitude: ";
+                                        cin >> lon;
+                                        cout << "Target city: ";
+                                        cin.ignore();
+                                        getline(cin, target);
+                                        cout << "Target country: ";
+                                        getline(cin, targetCountry);
+
+                                        fms.findBestFlightOptionsWithFewestAirlinesByCoordinatesToCity(lat, lon, target,
+                                                                                                       targetCountry);
+                                        break;
+                                    }
+                                    case '3' : {
+                                        double lat1, lon1, lat2, lon2;
+                                        cout << "Source latitude: ";
+                                        cin >> lat1;
+                                        cout << "Source longitude: ";
+                                        cin >> lon1;
+                                        cout << "Target latitude: ";
+                                        cin >> lat2;
+                                        cout << "Target longitude: ";
+                                        cin >> lon2;
+                                        fms.findBestFlightOptionsWithFewestAirlinesByCoordinatesToCoordinates(lat1,
+                                                                                                              lon1,
+                                                                                                              lat2,
+                                                                                                              lon2);
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                };
+                                break;
+                            }
+                            case 'Q' : {
+                                break;
+                            }
+                            default: {
+                                cout << endl << "Invalid option!" << endl;
+                            }
+                        };
                         break;
                     }
                     case 'Q' : {
@@ -1182,6 +1568,11 @@ void Menu::showMenu() {
                 };
                 break;
             }
+            case '5':{
+                
+                break;
+            }
+
             case 'Q' : {
                 flag = false;
                 break;
