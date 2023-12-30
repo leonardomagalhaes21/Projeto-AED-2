@@ -63,7 +63,7 @@ void Menu::showMenu() {
         cout << "| 2. Statistics                                    |" << endl;
         cout << "| 3. Best flight option                            |" << endl;
         cout << "| 4. Personalized preferences                      |" << endl;
-        cout << "| 5. Smallest Distance                             |" << endl;
+        cout << "| 5. Smallest distance between two airports        |" << endl;
         cout << "| Q. Exit                                          |" << endl;
         drawBottom();
         cout << "Choose an option: ";
@@ -1569,7 +1569,13 @@ void Menu::showMenu() {
                 break;
             }
             case '5':{
-                
+                string source, target;
+                cout<< "Source airport code: ";
+                cin >> source;
+                cout<< "Target airport code: ";
+                cin >> target;
+                cout << fms.findSmallestDistance(source, target);
+                cout << " km" << endl;
                 break;
             }
 

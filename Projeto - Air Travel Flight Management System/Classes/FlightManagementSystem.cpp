@@ -4,6 +4,7 @@
 
 #include "FlightManagementSystem.h"
 #include <climits>
+#include <cfloat>
 
 using namespace std;
 
@@ -2045,3 +2046,45 @@ void FlightManagementSystem::findBestFlightOptionsWithFewestAirlinesByCoordinate
     }
 }
 
+
+/**
+ * @brief Find the smallest distance between two airports, considering indirect flight routes.
+ *
+ * This function finds the smallest distance between two airports, even if there is no direct flight route between them.
+ * It calculates all possible flight options between the source and destination airports, computes the total distance for each option,
+ * and returns the minimum distance found.
+ *
+ * @param source The code of the source airport.
+ * @param destination The code of the destination airport.
+ *
+ * @return The smallest distance between the source and destination airports. Returns DBL_MAX if no valid path is found.
+ *
+ * @complexity Time Complexity: O(P * (V + E)), where P is the number of paths, V is the number of vertices, and E is the number of edges in the flights graph.
+ *
+ */
+double FlightManagementSystem::findSmallestDistance(const string &source, const string &destination) const {
+    if (airports.find(source) == airports.end() || airports.find(destination) == airports.end()) {
+        cout << "Invalid Airport Code(s)!" << endl;
+        return 0.0;
+    }
+    vector<vector<Route>> allPaths = findBestFlightOptions(source, destination);
+    double minDistance = DBL_MAX;
+
+    for (const auto& path : allPaths) {
+        double totalDistance = 0.0;
+        for (const auto& route : path) {
+            auto src = flights.findVertex(route.source);
+            auto dest = flights.findVertex(route.target);
+            for (const auto &edge: src->getAdj()) {
+                if (edge.getDest()->getInfo() == dest->getInfo()) {
+                    totalDistance += edge.getDistance();
+                }
+            }
+        }
+
+        if (totalDistance < minDistance) {
+            minDistance = totalDistance;
+        }
+    }
+    return minDistance;
+}

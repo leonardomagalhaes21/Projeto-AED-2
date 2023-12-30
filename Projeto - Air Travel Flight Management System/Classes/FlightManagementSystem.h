@@ -103,6 +103,8 @@ public:
     void findBestFlightOptionsWithFewestAirlinesByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry) const;
     void findBestFlightOptionsWithFewestAirlinesByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude) const;
 
+    double findSmallestDistance(const string &source, const string &destination) const;
+
 
 private:
     std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines
