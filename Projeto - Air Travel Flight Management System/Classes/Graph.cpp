@@ -868,12 +868,14 @@ vector<vector<string>> Graph::shortestPathsBFS(const string &source, const strin
             if (path.size() < minLength) {
                 paths.clear();
                 minLength = path.size();
+                paths.push_back(path);
+            } else if (path.size() == minLength) {
+                paths.push_back(path);
             }
-            paths.push_back(path);
         }
 
         if (path.size() > minLength) {
-            break;
+            continue;
         }
 
         Vertex* vertex = findVertex(node);

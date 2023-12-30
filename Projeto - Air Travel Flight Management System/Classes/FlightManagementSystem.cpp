@@ -887,7 +887,7 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptions(const string
             Vertex* s = flights.findVertex(path[i]);
             vector<string> flightAirlines;
             for (auto edge : s->getAdj()) {
-                if (edge.getDest()->getInfo() == path[i + 1]) {
+                if (edge.getDest()->getInfo() == path[i + 1] && find(selectedAirlines.begin(), selectedAirlines.end(), edge.getAirline()) != selectedAirlines.end()) {
                     flightAirlines.push_back(edge.getAirline());
                 }
             }
