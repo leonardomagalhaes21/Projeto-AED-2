@@ -572,37 +572,587 @@ void Menu::showMenu() {
                 cin >> key12;
                 switch(key12){
                     case '1': {
-                        string source, target;
-                        cout << "Source airport code: ";
-                        cin >> source;
-                        cout << "Target airport code: ";
-                        cin >> target;
+                        char key14;
+                        drawTop();
+                        cout << "| 1.  Find best flight option from airport         |" << endl;
+                        cout << "| 2.  Find best flight option from city            |" << endl;
+                        cout << "| 3.  Find best flight option from coordinates     |" << endl;
+                        cout << "| Q.  Exit                                         |" << endl;
+                        drawBottom();
+                        cout << "Choose an option: ";
+                        cin >> key14;
+                        switch(key14){
+                            case '1' : {
+                                char key15;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key15;
+                                switch(key15){
+                                    case '1' : {
+                                        char key16;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key16;
+                                        switch(key16){
+                                            case '1' : {
+                                                string source, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                cout << "Target airport code: ";
+                                                cin >> target;
 
-                        vector<string> airlines;
-                        string airline;
-                        char key14 = 'Y';
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key17 = 'Y';
 
-                        while (key14 == 'Y') {
-                            cout << "Enter airline code: ";
-                            cin >> airline;
-                            airlines.push_back(airline);
+                                                while (key17 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
 
-                            cout << "Add more? (Y/N): ";
-                            cin >> key14;
-                        }
-                        cin.ignore();
-                        cout << endl;
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key17;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
 
 
-                        auto vec = fms.findBestFlightOptionsWithGivenAirlines(source, target, airlines);
-                        for(int i = 0; i < vec.size(); i++){
-                            for(const auto& flight : vec[i]){
-                                fms.printRoute(flight);
+                                                auto vec = fms.findBestFlightOptions(source, target, airlines);
+                                                for(int i = 0; i < vec.size(); i++){
+                                                    for(const auto& flight : vec[i]){
+                                                        fms.printRoute(flight);
+                                                    }
+                                                    if (i != vec.size() -1) {
+                                                        cout << endl << '\t' << '\t' << "Or..." << endl;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, target;
+                                                cout << "Source airport name: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Target airport name: ";
+                                                getline(cin, target);
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key17 = 'Y';
+
+                                                while (key17 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key17;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByAirportName(source, target, airlines);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        char key18;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key18;
+                                        switch(key18){
+                                            case '1' : {
+                                                string source, targetCountry, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                cout << "Target city name: ";
+                                                cin.ignore();
+                                                getline(cin, target);
+                                                cout << "Target country name: ";
+                                                getline(cin, targetCountry);
+
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key19 = 'Y';
+
+                                                while (key19 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key19;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByAirportCodeToCityName(source, target, targetCountry, airlines);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, targetCountry, target;
+                                                cout << "Source airport name: ";
+                                                cin >> source;
+                                                cout << "Target city name: ";
+                                                cin.ignore();
+                                                getline(cin, target);
+                                                cout << "Target country name: ";
+                                                getline(cin, targetCountry);
+
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key20 = 'Y';
+
+                                                while (key20 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key20;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByAirportNameToCityName(source, target, targetCountry, airlines);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '3' : {
+                                        char key21;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key21;
+                                        switch (key21) {
+                                            case '1' : {
+                                                string source, target;
+                                                cout << "Source airport code: ";
+                                                cin >> source;
+                                                double lat, lon;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key22 = 'Y';
+
+                                                while (key22 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key22;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByAirportCodeToCoordinates(source, lat, lon,
+                                                                                                    airlines);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, target;
+                                                cout << "Source airport name: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                double lat, lon;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key23 = 'Y';
+
+                                                while (key23 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key23;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByAirportNameToCoordinates(source, lat, lon,
+                                                                                                    airlines);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                }
+                                break;
                             }
-                            if (i != vec.size() -1) {
-                                cout << endl << '\t' << '\t' << "Or..." << endl;
+                            case '2' : {
+                                char key24;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key24;
+                                switch(key24) {
+                                    case '1' : {
+                                        char key25;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key25;
+                                        switch (key25) {
+                                            case '1' : {
+                                                string source, sourceCountry, target;
+                                                cout << "Source city: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Source country: ";
+                                                getline(cin, sourceCountry);
+                                                cout << "Target airport code: ";
+                                                cin >> target;
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key26 = 'Y';
+
+                                                while (key26 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key26;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByCityToAirportCode(source, sourceCountry,target, airlines);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                string source, sourceCountry, target;
+                                                cout << "Source city: ";
+                                                cin.ignore();
+                                                getline(cin, source);
+                                                cout << "Source country: ";
+                                                getline(cin, sourceCountry);
+                                                cout << "Target airport name: ";
+                                                getline(cin, target);
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key27 = 'Y';
+
+                                                while (key27 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key27;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByCityToAirportName(source, sourceCountry,target, airlines);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        string source, sourceCountry, target, targetCountry;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Target city: ";
+                                        getline(cin, target);
+                                        cout << "Target country: ";
+                                        getline(cin, targetCountry);
+
+                                        vector<string> airlines;
+                                        string airline;
+                                        char key28 = 'Y';
+
+                                        while (key28 == 'Y') {
+                                            cout << "Enter airline code: ";
+                                            cin >> airline;
+                                            airlines.push_back(airline);
+
+                                            cout << "Add more? (Y/N): ";
+                                            cin >> key28;
+                                        }
+                                        cin.ignore();
+                                        cout << endl;
+
+                                        fms.findBestFlightOptionsByCity(source, sourceCountry, target, targetCountry, airlines);
+                                        break;
+                                    }
+                                    case '3' : {
+                                        double lat, lon;
+                                        string source, sourceCountry;
+                                        cout << "Source city: ";
+                                        cin.ignore();
+                                        getline(cin, source);
+                                        cout << "Source country: ";
+                                        getline(cin, sourceCountry);
+                                        cout << "Latitude: ";
+                                        cin >> lat;
+                                        cout << "Longitude: ";
+                                        cin >> lon;
+
+                                        vector<string> airlines;
+                                        string airline;
+                                        char key29 = 'Y';
+
+                                        while (key29 == 'Y') {
+                                            cout << "Enter airline code: ";
+                                            cin >> airline;
+                                            airlines.push_back(airline);
+
+                                            cout << "Add more? (Y/N): ";
+                                            cin >> key29;
+                                        }
+                                        cin.ignore();
+                                        cout << endl;
+
+                                        fms.findBestFlightOptionsByCityToCoordinates(source, sourceCountry, lat, lon, airlines);
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                };
+                                break;
                             }
-                        }
+                            case '3' : {
+                                char key30;
+                                drawTop();
+                                cout << "| 1.  To airport                                   |" << endl;
+                                cout << "| 2.  To city                                      |" << endl;
+                                cout << "| 3.  To coordinates                               |" << endl;
+                                cout << "| Q.  Exit                                         |" << endl;
+                                drawBottom();
+                                cout << "Choose an option: ";
+                                cin >> key30;
+                                switch(key30) {
+                                    case '1' : {
+                                        char key31;
+                                        drawTop();
+                                        cout << "| 1.  Code                                         |" << endl;
+                                        cout << "| 2.  Airport Name                                 |" << endl;
+                                        cout << "| Q.  Exit                                         |" << endl;
+                                        drawBottom();
+                                        cout << "Choose an option: ";
+                                        cin >> key31;
+                                        switch (key31) {
+                                            case '1' : {
+                                                double lat, lon;
+                                                string target;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                cout << "Target airport code: ";
+                                                cin >> target;
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key32 = 'Y';
+
+                                                while (key32 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key32;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByCoordinates(lat, lon, target, airlines);
+                                                break;
+                                            }
+                                            case '2' : {
+                                                double lat, lon;
+                                                string target;
+                                                cout << "Latitude: ";
+                                                cin >> lat;
+                                                cout << "Longitude: ";
+                                                cin >> lon;
+                                                cout << "Target airport name: ";
+                                                cin.ignore();
+                                                getline(cin, target);
+
+                                                vector<string> airlines;
+                                                string airline;
+                                                char key33 = 'Y';
+
+                                                while (key33 == 'Y') {
+                                                    cout << "Enter airline code: ";
+                                                    cin >> airline;
+                                                    airlines.push_back(airline);
+
+                                                    cout << "Add more? (Y/N): ";
+                                                    cin >> key33;
+                                                }
+                                                cin.ignore();
+                                                cout << endl;
+
+                                                fms.findBestFlightOptionsByCoordinatesToAirportName(lat, lon, target,airlines);
+                                                break;
+                                            }
+                                            case 'Q' : {
+                                                break;
+                                            }
+                                            default: {
+                                                cout << endl << "Invalid option!" << endl;
+                                            }
+                                        };
+                                        break;
+                                    }
+                                    case '2' : {
+                                        double lat, lon;
+                                        string target, targetCountry;
+                                        cout << "Latitude: ";
+                                        cin >> lat;
+                                        cout << "Longitude: ";
+                                        cin >> lon;
+                                        cout << "Target city: ";
+                                        cin.ignore();
+                                        getline(cin, target);
+                                        cout << "Target country: ";
+                                        getline(cin, targetCountry);
+
+                                        vector<string> airlines;
+                                        string airline;
+                                        char key34 = 'Y';
+
+                                        while (key34 == 'Y') {
+                                            cout << "Enter airline code: ";
+                                            cin >> airline;
+                                            airlines.push_back(airline);
+
+                                            cout << "Add more? (Y/N): ";
+                                            cin >> key34;
+                                        }
+                                        cin.ignore();
+                                        cout << endl;
+
+                                        fms.findBestFlightOptionsByCoordinatesToCity(lat, lon, target, targetCountry, airlines);
+                                        break;
+                                    }
+                                    case '3' : {
+                                        double lat1, lon1, lat2, lon2;
+                                        cout << "Source latitude: ";
+                                        cin >> lat1;
+                                        cout << "Source longitude: ";
+                                        cin >> lon1;
+                                        cout << "Target latitude: ";
+                                        cin >> lat2;
+                                        cout << "Target longitude: ";
+                                        cin >> lon2;
+
+                                        vector<string> airlines;
+                                        string airline;
+                                        char key35 = 'Y';
+
+                                        while (key35 == 'Y') {
+                                            cout << "Enter airline code: ";
+                                            cin >> airline;
+                                            airlines.push_back(airline);
+
+                                            cout << "Add more? (Y/N): ";
+                                            cin >> key35;
+                                        }
+                                        cin.ignore();
+                                        cout << endl;
+
+                                        fms.findBestFlightOptionsByCoordinatesToCoordinates(lat1, lon1, lat2, lon2, airlines);
+                                        break;
+                                    }
+                                    case 'Q' : {
+                                        break;
+                                    }
+                                    default: {
+                                        cout << endl << "Invalid option!" << endl;
+                                    }
+                                };
+                                break;
+                            }
+                            case 'Q' : {
+                                break;
+                            }
+                            default: {
+                                cout << endl << "Invalid option!" << endl;
+                            }
+                        };
                         break;
                     }
                     case 'Q' : {
