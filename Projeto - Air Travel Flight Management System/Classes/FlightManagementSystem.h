@@ -71,6 +71,21 @@ public:
     void findBestFlightOptionsByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude) const;
 
     vector<vector<Route>> findBestFlightOptionsWithGivenAirlines(const string &source, const string &destination, const vector<string> &selectedAirlines) const;
+    void findBestFlightOptionsByAirportName(const std::string &source, const std::string &destination,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCity(const std::string &sourceCity, const std::string &sourceCountry, const std::string &destinationCity, const std::string &destinationCountry,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCoordinates(double latitude, double longitude, const std::string &destination,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByAirportCodeToCityName(const std::string &source, const std::string &destinationCity, const std::string &destinationCountry,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByAirportNameToCityName(const std::string &sourceName, const std::string &destinationCity, const std::string &destinationCountry,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByAirportCodeToCoordinates(const string &source, double latitude, double longitude,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByAirportNameToCoordinates(const string &sourceName, double latitude, double longitude,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCityToAirportCode(const string &sourceCity, const string &sourceCountry, const string &destinationCode,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCityToAirportName(const string &sourceCity, const string &sourceCountry, const string &destinationName,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCityToCoordinates(const string &sourceCity, const string &sourceCountry, double latitude, double longitude,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCoordinatesToAirportName(double latitude, double longitude, const string &destinationName,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCoordinatesToCity(double latitude, double longitude, const string &destinationCity, const string &destinationCountry,const std::vector<std::string> &selectedAirlines) const;
+    void findBestFlightOptionsByCoordinatesToCoordinates(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude,const std::vector<std::string> &selectedAirlines) const;
+    const vector<vector<Route>>findBestFlightOptions(const std::string& source, const std::string& destination, const std::vector<std::string> &selectedAirlines) const;
+
 private:
     std::unordered_map<std::string, Airline> airlines;      ///< Map of airlines
 
