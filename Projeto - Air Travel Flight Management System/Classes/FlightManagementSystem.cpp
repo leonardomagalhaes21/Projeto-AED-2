@@ -2069,6 +2069,7 @@ double FlightManagementSystem::findSmallestDistance(const string &source, const 
     }
     vector<vector<Route>> allPaths = findBestFlightOptions(source, destination);
     double minDistance = DBL_MAX;
+    vector<Route> minPath;
 
     for (const auto& path : allPaths) {
         double totalDistance = 0.0;
@@ -2085,7 +2086,15 @@ double FlightManagementSystem::findSmallestDistance(const string &source, const 
 
         if (totalDistance < minDistance) {
             minDistance = totalDistance;
+            minPath = path;
         }
     }
+
+    cout << "The path with the smallest distance is: " << endl;
+    for (const auto& route : minPath) {
+        printRoute(route);
+    }
+
+    cout << "Total distance: ";
     return minDistance;
 }
