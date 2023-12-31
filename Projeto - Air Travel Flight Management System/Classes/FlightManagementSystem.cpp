@@ -2078,6 +2078,7 @@ double FlightManagementSystem::findSmallestDistance(const string &source, const 
             for (const auto &edge: src->getAdj()) {
                 if (edge.getDest()->getInfo() == dest->getInfo()) {
                     totalDistance += edge.getDistance();
+                    break;
                 }
             }
         }
