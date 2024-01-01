@@ -12,8 +12,6 @@ add_executable(Projeto2
         Classes/Airline.h
         Classes/Data.cpp
         Classes/Data.h
-        Classes/Flight.cpp
-        Classes/Flight.h
         Classes/FlightManagementSystem.cpp
         Classes/FlightManagementSystem.h
         Classes/Menu.cpp
