@@ -10,7 +10,6 @@ class Airline {
 public:
     Airline(const std::string& code, const std::string& name, const std::string& callsign, const std::string& country);
 
-    // Métodos de acesso
     std::string getCode() const;
     std::string getName() const;
     std::string getCallsign() const;

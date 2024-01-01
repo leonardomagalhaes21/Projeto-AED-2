@@ -717,7 +717,7 @@ unordered_set<string> Graph::articulationPoints() const {
         v->setVisited(false);
 
     int i = 0;
-    stack<string> s;  // Criar a pilha aqui
+    stack<string> s;
     for (auto v : vertexSet) {
         if (!v->isVisited()) {
             dfs_art(v, s, res, i);

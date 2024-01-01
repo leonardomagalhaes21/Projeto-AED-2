@@ -10,7 +10,6 @@ class Flight {
 public:
     Flight(const std::string& source, const std::string& target, const std::string& airline);
 
-    // Métodos de acesso
     std::string getSource() const;
     std::string getTarget() const;
     std::string getAirline() const;

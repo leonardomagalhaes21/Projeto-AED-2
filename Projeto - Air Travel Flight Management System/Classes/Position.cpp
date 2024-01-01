@@ -42,7 +42,7 @@ double Position::getLongitude() const {
      * @see https://en.wikipedia.org/wiki/Haversine_formula
      */
 double Position::haversineDistance(const Position& other) const {
-    const double R = 6371.0; // Raio da Terra em quilômetros
+    const double R = 6371.0;
     const double dLat = toRadians(other.latitude - latitude);
     const double dLon = toRadians(other.longitude - longitude);
 

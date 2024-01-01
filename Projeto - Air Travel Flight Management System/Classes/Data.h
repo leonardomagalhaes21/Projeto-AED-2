@@ -15,8 +15,6 @@
 
 class Data {
 private:
-//    typedef unordered_set<Airport, airportHash, airportHash> airportHTable;
-//    typedef unordered_set<Airline, airlineHash, airlineHash> airlineHTable;
 
     std::unordered_map<std::string, Airline> airlines;
 

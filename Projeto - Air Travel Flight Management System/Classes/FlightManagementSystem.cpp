@@ -311,7 +311,6 @@ int FlightManagementSystem::calcStopsBFS(Vertex* source, vector<pair<string,stri
                 q.push({w, q.front().second + 1});
                 w->setProcessing(true);
 
-                // Adicionando vértice ao conjunto de visitados
                 visited.insert(w->getInfo());
             }
         }
@@ -336,7 +335,7 @@ int FlightManagementSystem::calcStopsBFS(Vertex* source, vector<pair<string,stri
 void FlightManagementSystem::getTopAirportWithMostTraffic(int k) const {
     vector<Vertex*> res = flights.getVertexSet();
     sort(res.begin(), res.end(), [](Vertex* a, Vertex* b) {
-        return (a->getIndegree() + a->getOutdegree()) > (b->getIndegree() + b->getOutdegree()); // ordem inversa
+        return (a->getIndegree() + a->getOutdegree()) > (b->getIndegree() + b->getOutdegree());
     });
 
     if (k <= 0 || k > flights.getVertexSet().size()) return;
@@ -1468,24 +1467,24 @@ vector<vector<Route>> FlightManagementSystem::findBestFlightOptionsWithFewestAir
  * @complexity Time Complexity: O(R * A), where R is the number of routes and A is the number of airlines.
  */
 vector<Route> FlightManagementSystem::minimizeAirlines(const vector<Route>& routes) {
-    unordered_map<string, int> airlineCounts;
+    unordered_map<string, int> airlineCount;
     for (const auto& route : routes) {
         for (const auto& airline : route.airlines) {
-            airlineCounts[airline]++;
+            airlineCount[airline]++;
         }
     }
 
     int maxCount = 0;
-    for (const auto& pair : airlineCounts) {
+    for (const auto& pair : airlineCount) {
         if (pair.second > maxCount) {
             maxCount = pair.second;
         }
     }
 
-    vector<string> mostFrequentAirlines;
-    for (const auto& pair : airlineCounts) {
+    vector<string> frequentAirlines;
+    for (const auto& pair : airlineCount) {
         if (pair.second == maxCount) {
-            mostFrequentAirlines.push_back(pair.first);
+            frequentAirlines.push_back(pair.first);
         }
     }
 
@@ -1493,7 +1492,7 @@ vector<Route> FlightManagementSystem::minimizeAirlines(const vector<Route>& rout
         vector<Route> minimizedRoutes;
         for (const auto& route : routes) {
             Route newRoute = route;
-            newRoute.airlines = mostFrequentAirlines;
+            newRoute.airlines = frequentAirlines;
             minimizedRoutes.push_back(newRoute);
         }
         return minimizedRoutes;
